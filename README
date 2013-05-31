@@ -1,0 +1,10 @@
+HomeControl is a Home Control Suite that runs on a multitude of devices and interfaces with many others.
+
+The main device is a Raspberry Pi, with an Arduino connected to expand the IO of the Pi.
+
+The Pi will run a Java server program that will process all connections and commands from clients.
+It will also run a client program showing various information on an attached screen.
+
+XBMC will be interfaced using the JSON-RPC API, allowing control without having to modify your XBMC installation
+
+Windows will be interfaced using a service that will read data and control the computer in the background, to keep intrusion to a minimum.
