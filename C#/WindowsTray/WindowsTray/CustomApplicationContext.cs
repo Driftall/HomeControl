@@ -19,6 +19,14 @@ namespace WindowsTray
             InitializeContext();
         }
 
+        private void ContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = false;
+            notifyIcon.ContextMenuStrip.Items.Add("Home Control Suite");
+            notifyIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+            notifyIcon.ContextMenuStrip.Items.Add("Exit", null, new EventHandler(exitItem_Click));
+        }
+
         private System.ComponentModel.IContainer components;	// a list of components to dispose when the context is disposed
         private NotifyIcon notifyIcon;				            // the icon that sits in the system tray
 
@@ -32,9 +40,19 @@ namespace WindowsTray
                 Text = DefaultTooltip,
                 Visible = true
             };
-            //notifyIcon.ContextMenuStrip.Opening += ContextMenuStrip_Opening;
+            notifyIcon.ContextMenuStrip.Opening += ContextMenuStrip_Opening;
             //notifyIcon.DoubleClick += notifyIcon_DoubleClick;
             //notifyIcon.MouseUp += notifyIcon_MouseUp;
+        }
+
+        /// <summary>
+        /// When the exit menu item is clicked, make a call to terminate the ApplicationContext.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void exitItem_Click(object sender, EventArgs e)
+        {
+            ExitThread();
         }
     }
 }
