@@ -18,13 +18,15 @@ namespace WindowsTray
         {
             InitializeContext();
             Protocol protocol = new Protocol();
-            int ROOMTEMP = protocol.GetIDFromReading("ROOMTEMP");
-            MessageBox.Show(ROOMTEMP.ToString());
+            notifyIcon.ShowBalloonTip(5000, "Home Control Suite", "Started succesfully", ToolTipIcon.None);
+            //notifyIcon.ShowBalloonTip(5000, "Home Control Suite", "Started succesfully", ToolTipIcon.Info);
         }
 
         private void ContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = false;
+            //TODO: Set menu strip permanently
+            notifyIcon.ContextMenuStrip.Items.Clear();
             notifyIcon.ContextMenuStrip.Items.Add("Home Control Suite");
             notifyIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
             notifyIcon.ContextMenuStrip.Items.Add("Exit", null, new EventHandler(exitItem_Click));
