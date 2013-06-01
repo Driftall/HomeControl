@@ -214,3 +214,4 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 /Java/PiClient/nbproject/private/
+/Java/PiServer/nbproject/private/
