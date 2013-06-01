@@ -17,6 +17,9 @@ namespace WindowsTray
         public CustomApplicationContext()
         {
             InitializeContext();
+            Protocol protocol = new Protocol();
+            int ROOMTEMP = protocol.GetIDFromReading("ROOMTEMP");
+            MessageBox.Show(ROOMTEMP.ToString());
         }
 
         private void ContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
