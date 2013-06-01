@@ -7,4 +7,4 @@ It will also run a client program showing various information on an attached scr
 
 XBMC will be interfaced using the JSON-RPC API, allowing control without having to modify your XBMC installation
 
-Windows will be interfaced using a service that will read data and control the computer in the background, to keep intrusion to a minimum.
+Windows will be interfaced using a Notifier running in the system tray that will process any requests sent to the computer but will also report data back to the server. It has been implemented this way to remove the majority of intrusion but also allowing the user to see any issues that may occur.
