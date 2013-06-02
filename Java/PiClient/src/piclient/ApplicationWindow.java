@@ -37,8 +37,8 @@ public class ApplicationWindow extends Application {
         StackPane root = new StackPane();
         root.getChildren().add(time);
         root.getChildren().add(date);
-        root.getChildren().add(mediaPlaying);
-        root.getChildren().add(btn);
+        //root.getChildren().add(mediaPlaying);
+        //root.getChildren().add(btn);
         
         Scene scene = new Scene(root, 300, 250);
         

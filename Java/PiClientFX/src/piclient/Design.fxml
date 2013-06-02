@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="234.0" prefWidth="480.0" xmlns:fx="http://javafx.com/fxml" fx:controller="piclient.DesignController">
+  <children>
+    <Button fx:id="buttonPresense" layoutX="385.0" layoutY="199.0" onAction="#handleButtonPresense" text="I'm Leaving" />
+    <Label fx:id="media" layoutX="14.0" layoutY="201.0" text="No media is playing" />
+    <Label layoutX="14.0" layoutY="14.0" text="Home Control Suite" />
+  </children>
+</AnchorPane>
