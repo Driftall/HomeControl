@@ -29,7 +29,8 @@ namespace WindowsTray
             notifyIcon.ContextMenuStrip.Items.Clear();
             notifyIcon.ContextMenuStrip.Items.Add("Home Control Suite");
             notifyIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
-            notifyIcon.ContextMenuStrip.Items.Add("Exit", null, new EventHandler(exitItem_Click));
+            notifyIcon.ContextMenuStrip.Items.Add("Settings", null, new EventHandler(SettingsItem_Click));
+            notifyIcon.ContextMenuStrip.Items.Add("Exit", null, new EventHandler(ExitItem_Click));
         }
 
         private System.ComponentModel.IContainer components;	// a list of components to dispose when the context is disposed
@@ -50,12 +51,20 @@ namespace WindowsTray
             //notifyIcon.MouseUp += notifyIcon_MouseUp;
         }
 
+        private void SettingsItem_Click(object sender, EventArgs e)
+        {
+            FormSettings settingsForm = new FormSettings();
+            settingsForm.Show();
+
+
+        }
+
         /// <summary>
         /// When the exit menu item is clicked, make a call to terminate the ApplicationContext.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void exitItem_Click(object sender, EventArgs e)
+        private void ExitItem_Click(object sender, EventArgs e)
         {
             ExitThread();
         }
