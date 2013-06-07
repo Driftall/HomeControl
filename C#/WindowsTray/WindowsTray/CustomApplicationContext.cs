@@ -17,20 +17,28 @@ namespace WindowsTray
         public CustomApplicationContext()
         {
             InitializeContext();
-            Protocol protocol = new Protocol();
+            //Protocol protocol = new Protocol();
             notifyIcon.ShowBalloonTip(5000, "Home Control Suite", "Started succesfully", ToolTipIcon.None);
-            //notifyIcon.ShowBalloonTip(5000, "Home Control Suite", "Started succesfully", ToolTipIcon.Info);
+            SocketLibrary.Client client = new SocketLibrary.Client(Environment.MachineName);
+            client.Connected += client_Connected;
+            client.Disconnected += client_Disconnected;
+            client.DataReceivedFromServer += client_DataReceivedFromServer;
+            client.Connect("127.0.0.1", 9999);
         }
 
-        private void ContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        void client_DataReceivedFromServer(string data)
         {
-            e.Cancel = false;
-            //TODO: Set menu strip permanently
-            notifyIcon.ContextMenuStrip.Items.Clear();
-            notifyIcon.ContextMenuStrip.Items.Add("Home Control Suite");
-            notifyIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
-            notifyIcon.ContextMenuStrip.Items.Add("Settings", null, new EventHandler(SettingsItem_Click));
-            notifyIcon.ContextMenuStrip.Items.Add("Exit", null, new EventHandler(ExitItem_Click));
+            notifyIcon.ShowBalloonTip(5000, "Server Message", data, ToolTipIcon.Info);
+        }
+
+        void client_Connected()
+        {
+            notifyIcon.ShowBalloonTip(5000, "Home Control Suite", "Connected to server", ToolTipIcon.Info);
+        }
+
+        void client_Disconnected()
+        {
+            notifyIcon.ShowBalloonTip(5000, "Home Control Suite", "Connection lost", ToolTipIcon.Error);
         }
 
         private System.ComponentModel.IContainer components;	// a list of components to dispose when the context is disposed
@@ -46,24 +54,24 @@ namespace WindowsTray
                 Text = DefaultTooltip,
                 Visible = true
             };
-            notifyIcon.ContextMenuStrip.Opening += ContextMenuStrip_Opening;
-            //notifyIcon.DoubleClick += notifyIcon_DoubleClick;
-            //notifyIcon.MouseUp += notifyIcon_MouseUp;
+            notifyIcon.ContextMenuStrip.Items.Add("Home Control Suite");
+            notifyIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+            notifyIcon.ContextMenuStrip.Items.Add("Settings", null, new EventHandler(SettingsItem_Click));
+            notifyIcon.ContextMenuStrip.Items.Add("Exit", null, new EventHandler(ExitItem_Click));
+
+            notifyIcon.DoubleClick += notifyIcon_DoubleClick;
+        }
+
+        void notifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            DialogResult result = new FormSettings().ShowDialog();
         }
 
         private void SettingsItem_Click(object sender, EventArgs e)
         {
-            FormSettings settingsForm = new FormSettings();
-            settingsForm.Show();
-
-
+            DialogResult result = new FormSettings().ShowDialog();
         }
 
-        /// <summary>
-        /// When the exit menu item is clicked, make a call to terminate the ApplicationContext.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void ExitItem_Click(object sender, EventArgs e)
         {
             ExitThread();
