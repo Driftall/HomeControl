@@ -17,5 +17,7 @@ namespace WindowsTray
     {
         public static readonly string Volume = "001/";
         public static readonly string IP = "002/";
+        public static readonly string BatteryPercentage = "003/";
+        public static readonly string Beep = "004/";
     }
 }
