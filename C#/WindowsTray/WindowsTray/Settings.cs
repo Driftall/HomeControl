@@ -11,6 +11,7 @@ namespace WindowsTray
     {
         public void saveSetting(string attribute, string data)
         {
+            //http://forum.codecall.net/topic/58239-c-tutorial-reading-and-writing-xml-files/
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
 
