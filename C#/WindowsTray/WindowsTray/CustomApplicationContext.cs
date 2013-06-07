@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,19 +15,51 @@ namespace WindowsTray
         private static readonly string IconFileName = "home.ico";
         private static readonly string DefaultTooltip = "Home Control Suite";
 
+        HCClient client;
+
         public CustomApplicationContext()
         {
             InitializeContext();
             //Protocol protocol = new Protocol();
             notifyIcon.ShowBalloonTip(5000, "Home Control Suite", "Started succesfully", ToolTipIcon.None);
-            SocketLibrary.Client client = new SocketLibrary.Client(Environment.MachineName);
+            client = new HCClient(Environment.MachineName);
+            client.ConnectionFailed += client_ConnectionFailed;
             client.Connected += client_Connected;
             client.Disconnected += client_Disconnected;
-            client.DataReceivedFromServer += client_DataReceivedFromServer;
+            client.ValueRequestedFromServer += client_ValueRequestedFromServer;
+            client.MessageReceivedFromServer +=client_MessageReceivedFromServer;
             client.Connect("127.0.0.1", 9999);
         }
 
-        void client_DataReceivedFromServer(string data)
+        void client_ConnectionFailed()
+        {
+            notifyIcon.ShowBalloonTip(5000, "Home Control Suite", "Connection failed", ToolTipIcon.Error);
+        }
+
+        void client_ValueRequestedFromServer(string setting)
+        {
+            if(setting == Setting.IP)
+            {
+                client.SendValueToServer(Setting.IP, (Object)getLocalIP());                      
+            }
+        }
+
+        string getLocalIP()
+        {
+            IPHostEntry host;
+            string localIP = "?";
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
+            {
+                if (ip.AddressFamily.ToString() == "InterNetwork")
+                {
+                    localIP = ip.ToString();
+                }
+            }
+            return localIP;
+        }
+
+        void client_MessageReceivedFromServer(string data)
         {
             notifyIcon.ShowBalloonTip(5000, "Server Message", data, ToolTipIcon.Info);
         }

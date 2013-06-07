@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace WindowsTray
 {
-    internal static class ProtocolConstants
+    class Protocol
     {
-        internal static readonly string SETTING = "00/";
-        internal static readonly string GETTING = "01/";
+        public static readonly string getValue = "00/";
+        public static readonly string gotValue = "01/";
+        public static readonly string setValue = "02/";
+    }
 
-        static readonly int VOLUME = 1;
+    class Setting
+    {
+        public static readonly string Volume = "001/";
+        public static readonly string IP = "002/";
     }
 }
