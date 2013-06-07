@@ -44,6 +44,7 @@ namespace WindowsTray
             }
         }
 
+        //http://stackoverflow.com/questions/1069103/how-to-get-my-own-ip-address-in-c
         string getLocalIP()
         {
             IPHostEntry host;

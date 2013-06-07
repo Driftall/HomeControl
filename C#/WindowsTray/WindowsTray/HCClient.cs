@@ -9,6 +9,7 @@ namespace WindowsTray
     public delegate void OnSettingSentFromServerHandler(string setting, string value); //could be a Setting?
     public delegate void OnValueRequestedFromServerHandler(string setting);
     public delegate void OnMessageReceivedFromServerHandler(string message);
+    //http://www.codeproject.com/Articles/24948/Three-Ways-To-Extend-A-Class
     class HCClient : SocketLibrary.Client
     {
         public event OnSettingSentFromServerHandler SettingSentFromServer;
