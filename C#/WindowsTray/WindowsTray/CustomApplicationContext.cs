@@ -25,10 +25,9 @@ namespace WindowsTray
             notifyIcon.ShowBalloonTip(5000, "Home Control Suite", "Started succesfully", ToolTipIcon.None);
             client = new HCClient(Environment.MachineName);
             ProtocolProcessing protoProcessor = new ProtocolProcessing(client,notifyIcon);
-            client.Connect("127.0.0.1", 9999);
-            Settings setting = new Settings();
-            setting.saveSetting("IP", "127.0.0.1");
-            setting.saveSetting("port", "9999");
+            int port;
+            int.TryParse(Settings.getSetting(Settings.Port), out port);
+            client.Connect(Settings.getSetting(Settings.IP), port);
         }
 
         private System.ComponentModel.IContainer components;	// a list of components to dispose when the context is disposed

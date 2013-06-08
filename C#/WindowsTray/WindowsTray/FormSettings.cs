@@ -16,5 +16,23 @@ namespace WindowsTray
         {
             InitializeComponent();
         }
+
+        private void FormSettings_Load(object sender, EventArgs e)
+        {
+            textBoxIP.Text = Settings.getSetting(Settings.IP);
+            textBoxPort.Text = Settings.getSetting(Settings.Port);
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            Settings.saveSetting(Settings.IP, textBoxIP.Text);
+            Settings.saveSetting(Settings.Port, textBoxPort.Text);
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+        }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+        }
     }
 }
