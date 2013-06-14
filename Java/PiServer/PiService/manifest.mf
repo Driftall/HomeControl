@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-OpenIDE-Module: piserver.piservice
-OpenIDE-Module-Install: piserver/piservice/Installer.class
-OpenIDE-Module-Localizing-Bundle: piserver/piservice/Bundle.properties
-OpenIDE-Module-Specification-Version: 1.0
-
