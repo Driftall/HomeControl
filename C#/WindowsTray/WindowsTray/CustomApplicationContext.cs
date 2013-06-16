@@ -21,7 +21,6 @@ namespace WindowsTray
         public CustomApplicationContext()
         {
             InitializeContext();
-            //Protocol protocol = new Protocol();
             notifyIcon.ShowBalloonTip(5000, "Home Control Suite", "Started succesfully", ToolTipIcon.None);
             client = new HCClient(Environment.MachineName);
             ProtocolProcessing protoProcessor = new ProtocolProcessing(client,notifyIcon);

@@ -56,7 +56,7 @@ namespace WindowsTray
             }
             else if (setting == Setting.BatteryPercentage)
             {
-                client.SendValueToServer(Setting.BatteryPercentage, SystemInformation.PowerStatus.BatteryLifePercent);
+                client.SendValueToServer(Setting.BatteryPercentage, SystemInformation.PowerStatus.BatteryLifePercent * 100);
             }
         }
 

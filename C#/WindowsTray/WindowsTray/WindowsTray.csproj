@@ -45,6 +45,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ZuneLcdApi">
+      <HintPath>.\ZuneLcdApi.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomApplicationContext.cs" />
@@ -60,6 +63,8 @@
     <Compile Include="ProtocolConstants.cs" />
     <Compile Include="ProtocolProcessing.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Interfaces\WMPInterface.cs" />
+    <Compile Include="Interfaces\ZuneInterface.cs" />
     <EmbeddedResource Include="FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,0 +1,821 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZuneLcdApi</name>
+    </assembly>
+    <members>
+        <member name="T:VosSoft.ZuneLcd.Api.PlayerState">
+            <summary>
+            Specifies the states of the Zune player.
+            </summary>
+            <see cref="T:MicrosoftZunePlayback.MCPlayerState">ZuneDBApi.dll</see>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.PlayerState.Uninitialized">
+            <summary>
+            The player is uninitialized.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.PlayerState.Closed">
+            <summary>
+            The player is closed.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.PlayerState.Open">
+            <summary>
+            The player is open.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.PlayerState.Built">
+            <summary>
+            The player is built.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.PlayerState.Inactive">
+            <summary>
+            The player is inactive.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.PlayerState.Dead">
+            <summary>
+            The player is dead.
+            </summary>
+        </member>
+        <member name="T:VosSoft.ZuneLcd.Api.TrackType">
+            <summary>
+            Specifies the type of the current track in the Zune player.
+            </summary>
+            <see cref="T:ZuneUI.MediaType">ZuneShell.dll</see>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackType.Undefined">
+            <summary>
+            The type of the track is undefined.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackType.None">
+            <summary>
+            There is no current track.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackType.Music">
+            <summary>
+            Indicates that the track is music.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackType.Video">
+            <summary>
+            Indicates that the track is a video.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackType.Podcast">
+            <summary>
+            Indicates that the track is a podcast.
+            </summary>
+        </member>
+        <member name="T:VosSoft.ZuneLcd.Api.TrackState">
+            <summary>
+            Specifies the states of the current track within the Zune player.
+            </summary>
+            <see cref="T:MicrosoftZunePlayback.MCTransportState">ZuneDBApi.dll</see>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackState.Invalid">
+            <summary>
+            The track is invalid.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackState.Stopped">
+            <summary>
+            The track is stopped.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackState.Playing">
+            <summary>
+            The track is playing.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackState.Paused">
+            <summary>
+            The track is paused.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackState.Buffering">
+            <summary>
+            The track is buffering.
+            </summary>
+        </member>
+        <member name="T:VosSoft.ZuneLcd.Api.Track">
+            <summary>
+            Defines a track with all important informations from the Zune player.
+            </summary>
+            <see cref="T:ZuneUI.PlaybackTrack">ZuneShell.dll</see>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.Track.#ctor">
+            <summary>
+            Initializes an invalid instance of the <see cref="T:VosSoft.ZuneLcd.Api.Track"/> class and sets all values to their defaults.
+            </summary>
+            <see cref="P:VosSoft.ZuneLcd.Api.Track.Valid"/>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.Track.#ctor(ZuneUI.PlaybackTrack,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:VosSoft.ZuneLcd.Api.Track"/> class with all required informations.
+            </summary>
+            <param name="zuneTrack">The zune track.</param>
+            <param name="index">The zero based position of the track in the current playlist.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.Track.ToggleRating">
+            <summary>
+            Toggles the user rating of this track.
+            </summary>
+            <returns>The new track rating.</returns>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.Track.Rating"/>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.Track.RatingChanged"/>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.Track.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this track.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this track.
+            </returns>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.ZuneTrack">
+            <summary>
+            Gets a reference to the zune track.
+            </summary>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.Valid">
+            <summary>
+            Gets a value indicating whether this <see cref="T:VosSoft.ZuneLcd.Api.Track"/> is valid.
+            </summary>
+            <value><c>true</c> if valid; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.Uri">
+            <summary>
+            Gets the absolute URI of this track.
+            </summary>
+            <value>The URI.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.Index">
+            <summary>
+            Gets the zero based index position of this track in the current playlist.
+            <para>
+            <remarks>If the index equals <c>-1</c>, then the track has no playlist.</remarks>
+            </para>
+            </summary>
+            <value>The index position.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.Title">
+            <summary>
+            Gets the title of this track.
+            </summary>
+            <value>The title.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.Duration">
+            <summary>
+            Gets the overall duration of this track.
+            </summary>
+            <value>The overall duration.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.Position">
+            <summary>
+            Gets the current playing position of this track.
+            </summary>
+            <value>The current position.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.Artist">
+            <summary>
+            Gets the artist of this track.
+            <para>
+            <remarks>Because this property is optional, the value may be <c>string.Empty</c>.</remarks>
+            </para>
+            </summary>
+            <value>The artist.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.Album">
+            <summary>
+            Gets the album of this track.
+            <para>
+            <remarks>Because this property is optional, the value may be <c>string.Empty</c>.</remarks>
+            </para>
+            </summary>
+            <value>The album.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.ReleaseYear">
+            <summary>
+            Gets the release year of this track.
+            <para>
+            <remarks>Because this property is optional, the value may be <c>0</c> or <c>-1</c>
+            if the release year cannot be found within the Zune library itself.</remarks>
+            </para>
+            </summary>
+            <value>The release year.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.CoverUrl">
+            <summary>
+            Gets the absolute cover URL of this track.
+            <para>
+            <remarks>Because this property is optional, the value may be <c>string.Empty</c>
+            if this track has no cover.</remarks>
+            </para>
+            </summary>
+            <value>The cover URL.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.CanRate">
+            <summary>
+            Gets a value indicating whether this track can be rated by the user.
+            </summary>
+            <value><c>true</c> if this track can be rated; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.Rating">
+            <summary>
+            Gets or sets the user rating of this track.
+            </summary>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.Track.RatingChanged"/>
+            <seealso cref="M:VosSoft.ZuneLcd.Api.Track.ToggleRating"/>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.DurationFormat">
+            <summary>
+            Gets the overall duration of this track as an formated string ([h:]m:ss).
+            </summary>
+            <value>The formated duration.</value>
+            <see cref="M:ZuneUI.Shell.TimeSpanToString(System.TimeSpan)">ZuneShell.dll</see>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.Track.PositionFormat">
+            <summary>
+            Gets the current playing position of this track as an formated string ([h:]m:ss).
+            </summary>
+            <value>The formated position.</value>
+            <see cref="M:ZuneUI.Shell.TimeSpanToString(System.TimeSpan)">ZuneShell.dll</see>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.Track.RatingChanged">
+            <summary>
+            Occurs after the user rating of this track has changed.
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.Track.Rating"/>
+            <seealso cref="M:VosSoft.ZuneLcd.Api.Track.ToggleRating"/>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackRatingChanged"/>
+        </member>
+        <member name="T:VosSoft.ZuneLcd.Api.ZuneLcdApi">
+            <summary>
+            Defines the Zune LCD API class.
+            <para>This class can be used to access the Microsoft Zune software.</para>
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.ZuneLcdApi.MAX_TRACKS">
+            <summary>
+            The maximum track count for the <see cref="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.GetTracks(System.Int32,System.Int32,VosSoft.ZuneLcd.Api.TrackListCallback)"/> method.
+            </summary>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:VosSoft.ZuneLcd.Api.ZuneLcdApi"/> class.
+            <para>
+            <remarks>Note that you have to call the <see cref="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Launch(System.String)"/>-method to start the Zune software.</remarks>
+            </para>
+            </summary>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Launch(System.String)">
+            <summary>
+            Launches the Zune software with the specified command line arguments.
+            </summary>
+            <param name="args">The command line arguments for starting the Zune software.</param>
+            <returns><c>true</c> if the Zune software is not already running; otherwise, <c>false</c>.</returns>
+            <exception cref="T:System.ArgumentNullException"/>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.Starting"/>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Launch">
+            <summary>
+            Launches the Zune software.
+            </summary>
+            <returns><c>true</c> if the Zune software is not already running; otherwise, <c>false</c>.</returns>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.Starting"/>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Close">
+            <summary>
+            Closes the Zune software.
+            </summary>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.Closed"/>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Play">
+            <summary>
+            Plays the current track.
+            </summary>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.PlayAt(System.Int32)">
+            <summary>
+            Plays the track with the specified track index.
+            </summary>
+            <param name="trackIndex">Index of the track.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"/>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Pause">
+            <summary>
+            Pauses the current track.
+            </summary>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Stop">
+            <summary>
+            Stops the current track.
+            </summary>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Forward">
+            <summary>
+            Goes to the next track (if any).
+            </summary>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Back">
+            <summary>
+            Jumps to the beginning of the current track or goes to the previous track (if any).
+            </summary>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.GetTracks(System.Int32,System.Int32,VosSoft.ZuneLcd.Api.TrackListCallback)">
+            <summary>
+            Gets an amount of tracks from the current track list. The result is received through an asynchronous callback.
+            </summary>
+            <param name="startIndex">The start index of the current track list.</param>
+            <param name="count">The track count (0 for all tracks).</param>
+            <param name="callback">The callback when the track data arrives.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"/>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:System.IndexOutOfRangeException"/>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackListChanged"/>
+            <seealso cref="F:VosSoft.ZuneLcd.Api.ZuneLcdApi.MAX_TRACKS"/>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.ToggleFastForward">
+            <summary>
+            Toggles the fast forward value.
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.FastForwarding"/>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.SeekToPosition(System.Single)">
+            <summary>
+            Jumps to the specified position in the current track (if the track is searchable).
+            <para>
+            <remarks>The value must be between <c>0.0f</c> and the duration of the current track.</remarks>
+            </para>
+            </summary>
+            <param name="seconds">The seconds.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"/>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.CurrentTrack">Position</seealso>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.CurrentTrack">Duration</seealso>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackPositionChanged"/>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.ToggleMute">
+            <summary>
+            Toggles the muted value.
+            </summary>
+            <returns><c>true</c> if the Zune player is muted after this call; otherwise, <c>false</c>.</returns>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.Muted"/>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.ToggleRepeat">
+            <summary>
+            Toggles the repeating value.
+            </summary>
+            <returns><c>true</c> if the playlist within the Zune player is repeating after this call; otherwise, <c>false</c>.</returns>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.Repeating"/>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.ToggleShuffle">
+            <summary>
+            Toggles the shuffling value.
+            </summary>
+            <returns><c>true</c> if the playlist in the Zune player is shuffling after this call; otherwise, <c>false</c>.</returns>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.Shuffling"/>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Zune">
+            <summary>
+            The Zune thread.
+            </summary>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.CloseZune(System.Object)">
+            <summary>
+            Closes the Zune software.
+            </summary>
+            <param name="sender">The sender is required for the <see cref="T:Microsoft.Iris.DeferredInvokeHandler"/> 
+            delegate used with the Zune software.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Init">
+            <summary>
+            The Zune init thread is used to initialize all event handlers used within this API.
+            The thread will wait until the Zune software is ready for use.
+            </summary>
+            <see cref="T:MicrosoftZunePlayback.PlayerInterop">ZuneDBApi.dll</see>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.ZuneSetup(System.Object)">
+            <summary>
+            Hooks up to all event handlers which must be called from the Zune's dispatcher thread.
+            </summary>
+            <param name="sender">The sender is required for the <see cref="T:Microsoft.Iris.DeferredInvokeHandler"/> 
+            delegate used with the Zune software.</param>
+            <see cref="T:ZuneUI.TransportControls">ZuneShell.dll</see>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Window_PropertyChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Handles the PropertyChanged event of the Zune Window.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.StatusChanged(System.Object,System.EventArgs)">
+            <summary>
+            This method will be invoked after the state of the Zune player has changed.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.TransportStatusChanged(System.Object,System.EventArgs)">
+            <summary>
+            This method will be invoked after the transport state of the current track has changed.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.TransportPositionChanged(System.Object,System.EventArgs)">
+            <summary>
+            This method will be invoked after the transport position of the current track has changed.
+            <para>
+            <remarks>Usually this will be every 100ms if the track is playing.
+            See <see cref="P:MicrosoftZunePlayback.PlayerInterop.PositionEventInterval"/> for more details.
+            </remarks>
+            </para>
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Fastforwarding_ChosenChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the ChosenChanged event of the Fastforwarding control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Volume_PropertyChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Handles the PropertyChanged event of the Volume control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Muted_ChosenChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the ChosenChanged event of the Muted control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Repeating_ChosenChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the ChosenChanged event of the Repeating control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Shuffling_ChosenChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the ChosenChanged event of the Shuffling control.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.TransportControls_PropertyChanged(System.Object,System.ComponentModel.PropertyChangedEventArgs)">
+            <summary>
+            Handles the PropertyChanged event of the TransportControls of the Zune player.
+            This is used for low level access on the TransportControls.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.CurrentTrack_RatingChanged(System.Object,System.EventArgs)">
+            <summary>
+            Handles the RatingChanged event of the CurrentTrack.
+            </summary>
+            <param name="sender">The source of the event.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.CurrentPlaylist_ContentsChanged(System.Collections.IList,Microsoft.Iris.ListContentsChangedArgs)">
+            <summary>
+            Handles the ContentsChanged event of the CurrentPlaylist.
+            </summary>
+            <param name="senderList">The sender list.</param>
+            <param name="args">The args.</param>
+        </member>
+        <member name="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.GetTrackCount">
+            <summary>
+            Gets the track count and invokes the <see cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackListChanged"/> event.
+            </summary>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.Instance">
+            <summary>
+            Gets the singleton instance of this <see cref="T:VosSoft.ZuneLcd.Api.ZuneLcdApi"/> class.
+            <para>
+            <remarks>This value can be <c>null</c> if the class has never been instantiated before.</remarks>
+            </para>
+            </summary>
+            <value>The singleton instance of this class or <c>null</c>.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.IsRunning">
+            <summary>
+            Gets a value indicating whether the Zune software is running.
+            </summary>
+            <value>
+            <c>true</c> if the Zune software is running; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.IsReady">
+            <summary>
+            Gets a value indicating whether the Zune software is ready for use.
+            </summary>
+            <value><c>true</c> if the Zune software is ready for use; otherwise, <c>false</c>.</value>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.Ready"/>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.WindowState">
+            <summary>
+            Gets or sets the state of the Zune Software window.
+            </summary>
+            <value>The state of the window.</value>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.WindowStatusChanged"/>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.ShowInTaskbar">
+            <summary>
+            Gets or sets a value indicating whether the Zune software window will be visible in the taskbar.
+            </summary>
+            <value><c>true</c> if the Zune Software window is visible in the taskbar; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.PlayerState">
+            <summary>
+            Gets the current state of the Zune player.
+            </summary>
+            <value>The current state of the Zune player.</value>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.PlayerStatusChanged"/>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackState">
+            <summary>
+            Gets the state of the current track.
+            </summary>
+            <value>The state of the current track.</value>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackStatusChanged"/>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.CurrentTrack">
+            <summary>
+            Gets the current track.
+            <para>
+            <remarks>The track informations are only valid if <see cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackState"/>
+            is not <c>TrackState.Invalid</c>.</remarks>
+            </para>
+            </summary>
+            <value>The current track.</value>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackChanged"/>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackType">
+            <summary>
+            Gets the type of the current track.
+            </summary>
+            <value>The type of the current track.</value>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackTypeChanged"/>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackCount">
+            <summary>
+            Gets the track count of the current playlist.
+            </summary>
+            <value>The track count of the current playlist.</value>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.FastForwarding">
+            <summary>
+            Gets a value indicating whether fast forwarding is currently active.
+            </summary>
+            <value><c>true</c> if fast forwarding is active; otherwise, <c>false</c>.</value>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.FastForwardChanged"/>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.Volume">
+            <summary>
+            Gets or sets the volume of the Zune player.
+            <para>
+            <remarks>The value must be between <c>0.0f</c> and <c>100.0f</c>.</remarks>
+            </para>
+            </summary>
+            <value>The volume.</value>
+            <exception cref="T:System.ArgumentOutOfRangeException"/>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.VolumeChanged"/>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.Muted">
+            <summary>
+            Gets or sets a value indicating whether the Zune player is muted.
+            </summary>
+            <value><c>true</c> if muted; otherwise, <c>false</c>.</value>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.MuteChanged"/>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.Repeating">
+            <summary>
+            Gets or sets a value indicating whether the playlist within the Zune player is repeating.
+            </summary>
+            <value><c>true</c> if repeating; otherwise, <c>false</c>.</value>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.RepeatChanged"/>
+        </member>
+        <member name="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.Shuffling">
+            <summary>
+            Gets or sets a value indicating whether the playlist within the Zune player is shuffling.
+            </summary>
+            <value><c>true</c> if shuffling; otherwise, <c>false</c>.</value>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.ShuffleChanged"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.Starting">
+            <summary>
+            Occurs when the Zune software is starting up.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Launch(System.String)"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.Ready">
+            <summary>
+            Occurs when the Zune software is ready for use.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.IsReady"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.Closed">
+            <summary>
+            Occurs when the Zune software just closed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.Close"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.WindowStatusChanged">
+            <summary>
+            Occurs after the window state of the Zune Software has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.WindowState"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.PlayerStatusChanged">
+            <summary>
+            Occurs after the state of the Zune player has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.PlayerState"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackStatusChanged">
+            <summary>
+            Occurs after the state of the current track has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackState"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackChanged">
+            <summary>
+            Occurs after the current track has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.CurrentTrack"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackTypeChanged">
+            <summary>
+            Occurs after the type of the current track has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackType"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackPositionChanged">
+            <summary>
+            Occurs after the playing position of the current track has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.CurrentTrack">Position</seealso>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackRatingChanged">
+            <summary>
+            Occurs after the user rating of the current track has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.Track.Rating"/>
+            <seealso cref="E:VosSoft.ZuneLcd.Api.Track.RatingChanged"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.TrackListChanged">
+            <summary>
+            Occurs after the current playlist has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.GetTracks(System.Int32,System.Int32,VosSoft.ZuneLcd.Api.TrackListCallback)"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.FastForwardChanged">
+            <summary>
+            Occurs after the fast forward value has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.FastForwarding"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.VolumeChanged">
+            <summary>
+            Occurs after the volume of the Zune player has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.Volume"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.MuteChanged">
+            <summary>
+            Occurs after the muted value of the Zune player has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.Muted"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.RepeatChanged">
+            <summary>
+            Occurs after the repeating value of the playlist within the Zune player has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.Repeating"/>
+        </member>
+        <member name="E:VosSoft.ZuneLcd.Api.ZuneLcdApi.ShuffleChanged">
+            <summary>
+            Occurs after the shuffling value of the playlist within the Zune player has changed.
+            <para>
+            <remarks>Note that this event is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="P:VosSoft.ZuneLcd.Api.ZuneLcdApi.Shuffling"/>
+        </member>
+        <member name="T:VosSoft.ZuneLcd.Api.TrackListCallback">
+            <summary>
+            The callback for the <see cref="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.GetTracks(System.Int32,System.Int32,VosSoft.ZuneLcd.Api.TrackListCallback)"/> method.
+            <para>
+            <remarks>Note that this delegate is not thread safe, please take the necessary precautions.</remarks>
+            </para>
+            </summary>
+            <seealso cref="M:VosSoft.ZuneLcd.Api.ZuneLcdApi.GetTracks(System.Int32,System.Int32,VosSoft.ZuneLcd.Api.TrackListCallback)"/>
+        </member>
+        <member name="T:VosSoft.ZuneLcd.Api.WindowState">
+            <summary>
+            Specifies the states of the Zune Software window.
+            </summary>
+            <see cref="T:Microsoft.Iris.WindowState">UIX.dll</see>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.WindowState.Normal">
+            <summary>
+            The window is in normal state.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.WindowState.Minimized">
+            <summary>
+            The window is minimized.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.WindowState.Maximized">
+            <summary>
+            The window is maximized.
+            </summary>
+        </member>
+        <member name="T:VosSoft.ZuneLcd.Api.TrackRating">
+            <summary>
+            Specifies the user rating types of a track.
+            </summary>
+            <remarks>This is originally just an int value in the Zune software.</remarks>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackRating.Invalid">
+            <summary>
+            Track can't be rated.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackRating.Unrated">
+            <summary>
+            Track is unrated.
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackRating.DontLike">
+            <summary>
+            Track rating is set to "don't like".
+            </summary>
+        </member>
+        <member name="F:VosSoft.ZuneLcd.Api.TrackRating.Like">
+            <summary>
+            Track rating is set to "like".
+            </summary>
+        </member>
+    </members>
+</doc>
