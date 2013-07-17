@@ -89,11 +89,6 @@ namespace WindowsTray
             client.SendDebugToServer(device + debug);
         }
 
-        public void SendSettingToServer(string device, Object value)
-        {
-            client.SendDataToServer(device + DataProtocol.setValue + value);
-        }
-
         public void ChangeValueOnServer(string device, Object value)
         {
             client.SendDataToServer(device + DataProtocol.changedValue + value);

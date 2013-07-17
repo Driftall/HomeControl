@@ -4,12 +4,14 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using HomeControlProtocol;
+using System.Collections;
 
 namespace PiServer
 {
     class ProtocolProcessor
     {
         public HomeServer server;
+        public Dictionary<string, string> protocol;
         public ProtocolProcessor()
         {
             server = new HomeServer("Connected to Home Control Suite PiServer");//,"COM3");
@@ -17,11 +19,12 @@ namespace PiServer
             server.ClientConnected += server_ClientConnected;
             server.ClientDisconnected += server_ClientDisconnected;
             server.DebugReceivedFromClient += server_DebugReceivedFromClient;
-            server.SettingSentFromClient += server_SettingSentFromClient;
+            //server.SettingSentFromClient += server_SettingSentFromClient;
             server.ValueUpdatedByClient += server_ValueUpdatedByClient;
             server.MessageReceivedFromClient += server_MessageReceivedFromClient;
 
             server.startServer(9999); //TODO: Change port to variable
+            protocol = new Dictionary<string, string>();
         }
 
         void server_ServerListening()
@@ -39,14 +42,15 @@ namespace PiServer
             Console.WriteLine(client + ">Debug>" + debug);
         }
 
-        void server_SettingSentFromClient(string client, string device, string value)
+        void server_ValueUpdatedByClient(string client, string device, string value)
         {
-            Console.WriteLine(client + ">Data>" + device + ">Set>" + value);
+            Console.WriteLine(client + ">Data>" + device + ">Update>" + value);
+            protocol[device] = value;
             if (device == DeviceProtocol.Debug)
             {
                 if (value == VariableProtocol.On)
                 {
-
+                    
                 }
                 else
                 {
@@ -57,14 +61,27 @@ namespace PiServer
             {
                 if (value == VariableProtocol.On)
                 {
-                    server.SendSettingToClient("BLAKE-PC", device, value);
+                    ArrayList clients = server.GetClientList();
+                    foreach (string lClient in clients)
+                    {
+                        if (lClient != client)
+                        {
+                            server.SendSettingToClient(lClient, device, value);
+                        }
+                    }
                 }
             }
-        }
-
-        void server_ValueUpdatedByClient(string client, string device, string value)
-        {
-            Console.WriteLine(client + ">Data>" + device + ">Update>" + value);
+            else if (device == DeviceProtocol.BatteryPercentage)
+            {
+                if (value == "100")
+                {
+                    ArrayList clients = server.GetClientList();
+                    foreach (string lClient in clients)
+                    {
+                        server.SendMessageToClient(lClient, client + ">Battery is 100%");
+                    }
+                }
+            }
         }
 
         void server_MessageReceivedFromClient(string client, string message)

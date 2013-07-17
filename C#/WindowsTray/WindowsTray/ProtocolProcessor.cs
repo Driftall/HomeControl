@@ -20,10 +20,9 @@ namespace WindowsTray
         public static extern void LockWorkStation();
 
         public bool isLaptop = true;
+        float lastBatteryPercentage;
 
         HomeClient client;
-
-        Dictionary<string, string> proto;
 
         public ProtocolProcessor(String clientName, String IP, int Port)
         {
@@ -41,18 +40,17 @@ namespace WindowsTray
             client.SettingSentFromServer += client_SettingSentFromServer;
             client.MessageReceivedFromServer += client_MessageReceivedFromServer;
             client.Connect(IP, Port);
-            proto = new Dictionary<string, string>();
         }
 
         void SystemEvents_SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
         {
             if (e.Reason == SessionSwitchReason.SessionLock)
             {
-                //I left my desk
+                client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.On);
             }
             else if (e.Reason == SessionSwitchReason.SessionUnlock)
             {
-                client.SendSettingToServer(DeviceProtocol.LockStatus, "false");
+                client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.Off);
             }
         }
 
@@ -78,9 +76,12 @@ namespace WindowsTray
 
         void client_SettingSentFromServer(string setting, string value)
         {
-            if ((setting == DeviceProtocol.LockStatus) && (value == "true"))
+            if(setting == DeviceProtocol.LockStatus)
             {
-                LockWorkStation();
+                if (value == VariableProtocol.On)
+                {
+                    LockWorkStation();
+                }
             }
             else if (setting == DeviceProtocol.Beep)
             {
@@ -98,8 +99,9 @@ namespace WindowsTray
             if (isLaptop)
             {
                 float batteryPercentage = SystemInformation.PowerStatus.BatteryLifePercent * 100;
-                if (batteryPercentage.ToString() != proto[DeviceProtocol.BatteryPercentage])
+                if (batteryPercentage != lastBatteryPercentage)
                 {
+                    lastBatteryPercentage = batteryPercentage;
                     client.ChangeValueOnServer(DeviceProtocol.BatteryPercentage, batteryPercentage.ToString());
                 }
             }

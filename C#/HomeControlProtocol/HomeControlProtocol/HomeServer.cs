@@ -12,7 +12,6 @@ namespace HomeControlProtocol
     public delegate void ClientConnectedHandler(string client);
     public delegate void ClientDisconnectedHandler(string client);
     public delegate void OnDebugReceivedFromClientHandler(string client, string device, string debug);
-    public delegate void OnSettingSentFromClientHandler(string client, string device, string value);
     public delegate void OnValueUpdatedByClientHandler(string client, string device, string value);
     public delegate void OnMessageReceivedFromClientHandler(string client, string message);
     public class HomeServer
@@ -21,7 +20,6 @@ namespace HomeControlProtocol
         public event ClientConnectedHandler ClientConnected;
         public event ClientDisconnectedHandler ClientDisconnected;
         public event OnDebugReceivedFromClientHandler DebugReceivedFromClient;
-        public event OnSettingSentFromClientHandler SettingSentFromClient;
         public event OnValueUpdatedByClientHandler ValueUpdatedByClient;
         public event OnMessageReceivedFromClientHandler MessageReceivedFromClient;
 
@@ -52,7 +50,7 @@ namespace HomeControlProtocol
             }
         }
 
-        public ArrayList GetCilentList()
+        public ArrayList GetClientList()
         {
             return server.GetClientList();
         }
@@ -99,10 +97,6 @@ namespace HomeControlProtocol
             {
                 ValueUpdatedByClient("arduino", device, value);
             }
-            else if (command.StartsWith(DataProtocol.setValue))
-            {
-                SettingSentFromClient("arduino", device, value.Replace("\r", ""));
-            }    
         }
 
         void arduino_MessageReceivedFromArduino(string message)
@@ -135,10 +129,6 @@ namespace HomeControlProtocol
             if (command.StartsWith(DataProtocol.changedValue))
             {
                 ValueUpdatedByClient(client, device, value);
-            }
-            else if (command.StartsWith(DataProtocol.setValue))
-            {
-                SettingSentFromClient(client, device, value);
             }
         }
 
