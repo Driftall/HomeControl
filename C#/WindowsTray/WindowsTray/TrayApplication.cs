@@ -10,27 +10,40 @@ using System.Windows.Forms;
 
 namespace WindowsTray
 {
-    public class CustomApplicationContext : ApplicationContext
+    public class TrayApplication : ApplicationContext
     {
         //Source: https://www.simple-talk.com/dotnet/.net-framework/creating-tray-applications-in-.net-a-practical-guide/#ninth
         private static readonly string IconFileName = "home.ico";
         private static readonly string DefaultTooltip = "Home Control Suite";
 
-        HCClient client;
+        private System.ComponentModel.IContainer components;	// a list of components to dispose when the context is disposed
+        private NotifyIcon notifyIcon;				            // the icon that sits in the system tray
+        private Timer timer;
+        private ProtocolProcessor cpu;
 
-        public CustomApplicationContext()
+        public TrayApplication()
         {
             InitializeContext();
             notifyIcon.ShowBalloonTip(5000, "Home Control Suite", "Started succesfully", ToolTipIcon.None);
-            client = new HCClient(Environment.MachineName);
-            ProtocolProcessing protoProcessor = new ProtocolProcessing(client,notifyIcon);
             int port;
             int.TryParse(Settings.getSetting(Settings.Port), out port);
-            client.Connect(Settings.getSetting(Settings.IP), port);
+            cpu = new ProtocolProcessor(Environment.MachineName, Settings.getSetting(Settings.IP), port);
+            cpu.Notify += cpu_Notify;
+            timer = new Timer();
+            timer.Interval = 10000;
+            timer.Tick += timer_Tick;
+            timer.Enabled = true;
         }
 
-        private System.ComponentModel.IContainer components;	// a list of components to dispose when the context is disposed
-        private NotifyIcon notifyIcon;				            // the icon that sits in the system tray
+        void timer_Tick(object sender, EventArgs e)
+        {
+            cpu.timerTick();
+        }
+
+        void cpu_Notify(int timeout, string tipTitle, string tipText, ToolTipIcon tipIcon)
+        {
+            notifyIcon.ShowBalloonTip(timeout, tipTitle, tipText, tipIcon);
+        }
 
         private void InitializeContext()
         {

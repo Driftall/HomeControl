@@ -16,9 +16,9 @@ namespace WindowsTray
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            ApplicationContext applicationContext = new CustomApplicationContext();
+            ApplicationContext trayApplication = new TrayApplication();
 
-            Application.Run(applicationContext);
+            Application.Run(trayApplication);
         }
     }
 }
