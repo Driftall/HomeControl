@@ -16,8 +16,12 @@ int iKey = 0;
 
 boolean enteringKey = false;
 boolean systemLocked = false;
-long startMillis = 0;
-long timeout = 10000;
+long timerCount = 0;
+long timerInterval = 1000;
+long keyPadCurrent = -1;
+long keyPadTimeout = 10;
+long messageCurrent = -1;
+long messageTimeout = 2;
 
 const byte rows = 4; //four rows
 const byte cols = 3; //three columns
@@ -77,10 +81,17 @@ void setup()
   delay(500);
   Serial.println(cID + arduinoID);
   lcdHomeScreen();
+  timerCount = millis();
 }
 
 void loop()
 {
+  long mil = millis();
+  if(mil - timerCount > timerInterval)
+  {
+    timerCount = mil;
+    timerTick(); 
+  }
   char key = keypad.getKey();
   if(key)
   {
@@ -88,10 +99,39 @@ void loop()
   }
 }
 
+void timerTick()
+{
+  if(keyPadCurrent != -1)
+  {
+    if(keyPadCurrent > keyPadTimeout)
+    {
+      enteringKey = false;
+      keyPadCurrent = -1;
+      lcdCodeTimeoutScreen();
+      messageCurrent = 0;
+    }
+    else
+    {
+      keyPadCurrent++;
+    }
+  }
+  if(messageCurrent != -1)
+  {
+    if(messageCurrent > messageTimeout)
+    {
+      messageCurrent = -1;
+      lcdHomeScreen();
+    }
+    else
+    {
+     messageCurrent++; 
+    }
+  }
+}
 
 void keyPressed(char key)
 {
-  if(key == '#') // Quick lock
+  if((key == '#') && (enteringKey == false)) // Quick lock
   {
     iKey = 0;
     systemLocked = true;
@@ -101,10 +141,27 @@ void keyPressed(char key)
   else if(key == '*') // Key Entry
   {
     iKey = 0;
+    if(enteringKey)
+    {
+      enteringKey = false;
+      keyPadCurrent = -1;
+      lcdHomeScreen();
+    }
+    else
+    {
+      enteringKey = true;
+      keyPadCurrent = 0;
+      lcdEnterKeyScreen();
+    }
+  }
+  else if((key == '0') && (enteringKey == true))
+  {
+    iKey = 0;
     enteringKey = true;
+    keyPadCurrent = 0;
     lcdEnterKeyScreen();
   }
-  else if((key) && (enteringKey == true))
+  else if((key) && (enteringKey == true) && (key != '#') && (key != '*'))
   {
     inputKey[iKey] = key;
     lcd.setCursor(11+iKey,1);
@@ -123,8 +180,8 @@ void keyPressed(char key)
       {
         enteringKey = false;
         lcdCodeFailedScreen();
+        messageCurrent = 0;
         Serial.println("codeFailed");
-        startMillis = 0;
       }
       else // code worked
       {
@@ -189,7 +246,7 @@ void lcdCodeFailedScreen()
   lcd.print("  Code  Failed  ");
 }
 
-void lcdCodeTimeout()
+void lcdCodeTimeoutScreen()
 {
   lcd.clear();
   lcd.print(day + " " + date + " " + month + " " + hour + ":" + minute);
