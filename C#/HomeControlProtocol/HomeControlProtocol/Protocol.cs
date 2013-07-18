@@ -9,7 +9,6 @@ namespace HomeControlProtocol
     public class DataProtocol
     {
         public static readonly string changedValue = "00/";
-        //public static readonly string gotValue = "01/";
         public static readonly string setValue = "02/";
     }
 
@@ -25,7 +24,9 @@ namespace HomeControlProtocol
 
     public class VariableProtocol
     {
-        public static readonly string On = "1";
         public static readonly string Off = "0";
+        public static readonly string On = "1";
+        public static readonly string QuickLock = "2";
+        public static readonly string FullLock = "3";
     }
 }

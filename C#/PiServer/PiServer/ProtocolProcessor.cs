@@ -19,7 +19,6 @@ namespace PiServer
             server.ClientConnected += server_ClientConnected;
             server.ClientDisconnected += server_ClientDisconnected;
             server.DebugReceivedFromClient += server_DebugReceivedFromClient;
-            //server.SettingSentFromClient += server_SettingSentFromClient;
             server.ValueUpdatedByClient += server_ValueUpdatedByClient;
             server.MessageReceivedFromClient += server_MessageReceivedFromClient;
 
