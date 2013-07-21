@@ -42,6 +42,12 @@ namespace PiServer
                             cpu.server.SendMessageToClient("BLAKE-PC", message);
                             break;
                         }
+                    case "weather":
+                        {
+                            Weather weather = Wunderground.GetWeather("IP26 4LB");
+                            Console.WriteLine("The weather in " + weather.City + "(IP26 4LB) is " + weather.TempC + " degrees celcius with " + weather.WeatherDesc);
+                            break;
+                        }
                 }
             }
         }
