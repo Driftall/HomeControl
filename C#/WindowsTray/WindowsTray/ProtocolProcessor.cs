@@ -31,6 +31,7 @@ namespace WindowsTray
                 isLaptop = false;
             }
             Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SystemEvents_SessionSwitch);
+            Microsoft.Win32.SystemEvents.PowerModeChanged += new Microsoft.Win32.PowerModeChangedEventHandler(SystemEvents_PowerModeChanged);
 
             client = new HomeClient(clientName);
             client.Connected += client_Connected;
@@ -42,11 +43,20 @@ namespace WindowsTray
             client.Connect(IP, Port);
         }
 
+        void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            if (e.Mode == PowerModes.Suspend)
+            {
+                client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.FullLock);
+            }
+            //TODO: Connect after waking?
+        }
+
         void SystemEvents_SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
         {
             if (e.Reason == SessionSwitchReason.SessionLock)
             {
-                client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.On);
+                client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.QuickLock);
             }
             else if (e.Reason == SessionSwitchReason.SessionUnlock)
             {
@@ -78,9 +88,13 @@ namespace WindowsTray
         {
             if(setting == DeviceProtocol.LockStatus)
             {
-                if (value == VariableProtocol.On)
+                if (value == VariableProtocol.QuickLock)
                 {
                     LockWorkStation();
+                }
+                else if (value == VariableProtocol.FullLock)
+                {
+                    //Sleep PC
                 }
             }
             else if (setting == DeviceProtocol.Beep)
