@@ -136,7 +136,7 @@ void keyPressed(char key)
     iKey = 0;
     systemLocked = true;
     lcdHomeScreen();
-    Serial.println(cData + aLockStatus + dSetValue + vQuickLock);
+    Serial.println(cData + aLockStatus + dChangedValue + vQuickLock);
   } 
   else if(key == '*') // Key Entry
   {
@@ -188,12 +188,12 @@ void keyPressed(char key)
         if(systemLocked)
         {
           systemLocked = false;
-          Serial.println(cData + aLockStatus + dSetValue + vOff);
+          Serial.println(cData + aLockStatus + dChangedValue + vOff);
         }
         else //system wasnt locked
         {
           systemLocked = true;
-          Serial.println(cData + aLockStatus + dSetValue + vFullLock); //full lock
+          Serial.println(cData + aLockStatus + dChangedValue + vFullLock); //full lock
         }
         enteringKey = false;
         lcdHomeScreen();
@@ -254,7 +254,7 @@ void lcdCodeTimeoutScreen()
   lcd.print("  Code Timeout  ");  
 }
 
-/*  if(Serial.available() >= 5)
+  /*if(Serial.available() >= 5)
  {
  String socketData = "";
  for(int i = 0;i<2;i++)
@@ -286,5 +286,4 @@ void lcdCodeTimeoutScreen()
  }
  }
  }
- }
- */
+ }*/
