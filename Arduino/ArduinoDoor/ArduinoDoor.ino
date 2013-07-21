@@ -36,6 +36,9 @@ byte rowPins[rows] = {
 byte colPins[cols] = {
   6,8,4}; //connect to the column pinouts of the keypad
 
+String[] months = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec" };
+String[] days = {"", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+
 //SocketProtocol
 String const cID = "0/";
 String const cConnected = "1/";
@@ -58,8 +61,9 @@ String const aDoorLCD = "005/";
 //VariableProtocol
 String const vOff = "0";
 String const vOn = "1";
-String const vQuickLock = "2";
-String const vFullLock = "3";
+String const vUnlock = "2";
+String const vQuickLock = "3";
+String const vFullLock = "4";
 
 String arduinoID = "Arduino_Door";
 
