@@ -10,6 +10,7 @@ namespace PiServer
     class Weather
     {
         public string City { get; set; }
+        public string Postcode { get; set; }
         public string WeatherDesc { get; set; }
         public string TempC {get; set; }
         public string Humidity {get; set;}
@@ -28,6 +29,7 @@ namespace PiServer
             {
                 System.Collections.Generic.IEnumerable<XElement> display_location = (from i in doc.Descendants("current_observation") select i.Element("display_location"));
                 result.City = display_location.Descendants("city").First().Value;
+                result.Postcode = postcode;
                 result.WeatherDesc = (from i in doc.Descendants("current_observation") select i.Element("weather").Value).First();
                 result.TempC = (from i in doc.Descendants("current_observation") select i.Element("temp_c").Value).First();
                 result.Humidity = (from i in doc.Descendants("current_observation") select i.Element("relative_humidity").Value).First();

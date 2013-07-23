@@ -45,7 +45,7 @@ namespace PiServer
                     case "weather":
                         {
                             Weather weather = Wunderground.GetWeather("IP26 4LB");
-                            Console.WriteLine("The weather in " + weather.City + "(IP26 4LB) is " + weather.TempC + " degrees celcius with " + weather.WeatherDesc);
+                            Console.WriteLine("The weather in " + weather.City + "(" + weather.Postcode + ") is " + weather.TempC + " degrees celcius with " + weather.WeatherDesc);
                             break;
                         }
                 }
