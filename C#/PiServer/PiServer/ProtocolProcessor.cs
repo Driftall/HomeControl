@@ -26,11 +26,6 @@ namespace PiServer
             protocol = new Dictionary<string, string>();
         }
 
-        public void Tick()
-        {
-            server.SendSettingToClient("arduino", DeviceProtocol.DateTime, DateTime.Now.ToString());
-        }
-
         void server_ServerListening()
         {
             Console.WriteLine("SERVER>Listening");
