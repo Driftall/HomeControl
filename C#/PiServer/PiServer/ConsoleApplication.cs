@@ -43,8 +43,30 @@ namespace PiServer
                             Console.WriteLine("The weather in " + weather.City + "(" + weather.Postcode + ") is " + weather.TempC + " degrees celcius with " + weather.WeatherDesc);
                             break;
                         }
+                    case "timer":
+                        {
+                            hTimer tempTimer = new hTimer("Test timer", 0, 20);
+                            tempTimer.TimerComplete += timer_TimerComplete;
+                            break;
+                        }
+                    case "alarm":
+                        {
+                            hAlarm tempAlarm = new hAlarm("Test alarm", DateTime.Now.AddSeconds(5));
+                            tempAlarm.AlarmActive += alarm_AlarmActive;
+                            break;
+                        }
                 }
             }
+        }
+
+        void alarm_AlarmActive(string name)
+        {
+            Console.WriteLine(name + " activated");
+        }
+
+        void timer_TimerComplete(string name)
+        {
+            Console.WriteLine(name + " completed");
         }
     }
 }

@@ -21,6 +21,8 @@ namespace HomeControlProtocol
         public static readonly string Beep = "004/";
 	    public static readonly string DoorLCD = "005/";
         public static readonly string DateTime = "006/";
+        public static readonly string Alarm = "007/";
+        public static readonly string Timer = "008/";
     }
 
     public class VariableProtocol

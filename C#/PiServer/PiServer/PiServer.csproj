@@ -48,10 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Timing\hAlarm.cs" />
     <Compile Include="ConsoleApplication.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolProcessor.cs" />
+    <Compile Include="Timing\hTimer.cs" />
     <Compile Include="Weather.cs" />
   </ItemGroup>
   <ItemGroup>
