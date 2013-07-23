@@ -1,4 +1,4 @@
-const long interval = 500;
+const long interval = 2500;
 const byte tempPin = 0;
 long temp = 0;
 long lastMillis = 0;
@@ -6,7 +6,7 @@ long lastMillis = 0;
 void setup()
 {
   Serial.begin(9600);
-  analogReference(INTERNAL);
+  analogReference(INTERNAL1V1);
 }
 
 void loop()
@@ -29,6 +29,6 @@ void printTemperature(int value) {
 
 void doTemperatureMeasurement() {
  int aRead = analogRead(tempPin);
- temp = ((100*1.1*aRead)/1024)*10;
+ temp = (aRead/10.23)*10;
  printTemperature(temp);
 }
