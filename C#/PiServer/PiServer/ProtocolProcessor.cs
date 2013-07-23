@@ -14,7 +14,7 @@ namespace PiServer
         public Dictionary<string, string> protocol;
         public ProtocolProcessor()
         {
-            server = new HomeServer("Connected to Home Control Suite PiServer");//,"COM3");
+            server = new HomeServer("Connected to Home Control Suite PiServer");//,"COM3");//,"ttyACM0");
             server.ServerListening += server_ServerListening;
             server.ClientConnected += server_ClientConnected;
             server.ClientDisconnected += server_ClientDisconnected;
@@ -24,6 +24,11 @@ namespace PiServer
 
             server.startServer(9999); //TODO: Change port to variable
             protocol = new Dictionary<string, string>();
+        }
+
+        public void Tick()
+        {
+            server.SendSettingToClient("arduino", DeviceProtocol.DateTime, DateTime.Now.ToString());
         }
 
         void server_ServerListening()
@@ -49,16 +54,23 @@ namespace PiServer
             {
                 if (value == VariableProtocol.On)
                 {
-                    
+
                 }
-                else
+                else if (value == VariableProtocol.Off)
                 {
 
                 }
             }
             else if (device == DeviceProtocol.LockStatus)
             {
-                if (value == VariableProtocol.On)
+                if (value == VariableProtocol.Unlock)
+                {
+                    if (client != "arduino")
+                    {
+                        server.SendSettingToClient(client, device, value);
+                    }
+                }
+                else
                 {
                     ArrayList clients = server.GetClientList();
                     foreach (string lClient in clients)

@@ -36,8 +36,8 @@ byte rowPins[rows] = {
 byte colPins[cols] = {
   6,8,4}; //connect to the column pinouts of the keypad
 
-String[] months = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec" };
-String[] days = {"", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+String months[12] = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec" };
+String days[8] = {"", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
 //SocketProtocol
 String const cID = "0/";
@@ -57,6 +57,7 @@ String const aIP = "002/";
 String const aBatteryPercentage = "003/";
 String const aBeep = "004/";
 String const aDoorLCD = "005/";
+String const aDateTime = "006/";
 
 //VariableProtocol
 String const vOff = "0";

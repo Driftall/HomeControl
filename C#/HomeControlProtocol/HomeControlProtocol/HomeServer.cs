@@ -5,6 +5,7 @@ using System.Text;
 
 using SocketLibrary;
 using System.Collections;
+using System.Timers;
 
 namespace HomeControlProtocol
 {
@@ -25,6 +26,7 @@ namespace HomeControlProtocol
 
         Server server;
         Arduino arduino;
+        Timer arduinoTimer;
 
         bool arduinoConnected = false;
 
@@ -47,7 +49,27 @@ namespace HomeControlProtocol
                 arduino.DebugReceivedFromArduino += arduino_DebugReceivedFromArduino;
                 arduino.DataReceivedFromArduino += arduino_DataReceivedFromArduino;
                 arduino.MessageReceivedFromArduino += arduino_MessageReceivedFromArduino;
+                arduinoTimer = new Timer(30000);
+                arduinoTimer.AutoReset = true;
+                arduinoTimer.Elapsed += arduinoTimer_Elapsed;
             }
+        }
+
+        void arduinoTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            int dayInt = (int)DateTime.Now.DayOfWeek;
+            if (dayInt == 0) dayInt = 7;
+            String day = "0" + dayInt.ToString();
+            String date = DateTime.Now.Day.ToString();
+            if (date.Length != 2) date = "0" + date;
+            String month = DateTime.Now.Month.ToString();
+            if (month.Length != 2) month = "0" + month;
+            String hour = DateTime.Now.Hour.ToString();
+            if (hour.Length != 2) hour = "0" + hour;
+            String minute = DateTime.Now.Minute.ToString();
+            if (minute.Length != 2) minute = "0" + minute;
+            string toSend = DeviceProtocol.DateTime + DataProtocol.setValue + day.ToString() + " " + date + " " + month + " " + hour + ":" + minute;
+            arduino.SendDataToArduino(toSend);
         }
 
         public ArrayList GetClientList()

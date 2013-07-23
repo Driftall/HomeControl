@@ -60,7 +60,7 @@ namespace WindowsTray
             }
             else if (e.Reason == SessionSwitchReason.SessionUnlock)
             {
-                client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.Off);
+                client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.Unlock);
             }
         }
 
