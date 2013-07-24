@@ -33,4 +33,9 @@ namespace HomeControlProtocol
         public static readonly string QuickLock = "3";
         public static readonly string FullLock = "4";
     }
+
+    public class DatabaseProtocol
+    {
+        public static readonly string Alarms = "Alarms";
+    }
 }

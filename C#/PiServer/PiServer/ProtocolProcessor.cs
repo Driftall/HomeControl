@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using HomeControlProtocol;
 using System.Collections;
+using System.Timers;
+using System.Data;
 
 namespace PiServer
 {
@@ -12,6 +14,7 @@ namespace PiServer
     {
         public HomeServer server;
         public Dictionary<string, string> protocol;
+        Timer timeChecker;
         public ProtocolProcessor()
         {
             server = new HomeServer("Connected to Home Control Suite PiServer");//,"COM3");//,"ttyACM0");
@@ -22,8 +25,34 @@ namespace PiServer
             server.ValueUpdatedByClient += server_ValueUpdatedByClient;
             server.MessageReceivedFromClient += server_MessageReceivedFromClient;
 
+            timeChecker = new Timer(30000);
+            timeChecker.Elapsed += timeChecker_Elapsed;
+            timeChecker.AutoReset = true;
+            timeChecker.Start();
+
             server.startServer(9999); //TODO: Change port to variable
             protocol = new Dictionary<string, string>();
+        }
+
+        void timeChecker_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            SQLiteDatabase database = new SQLiteDatabase("saved.db3");
+            DataTable alarms = database.GetDataTable("SELECT * FROM " + DatabaseProtocol.Alarms + ";");
+            foreach (DataRow alarm in alarms.Rows)
+            {
+                if(alarm["Enabled"].ToString() == "1")
+                {
+                    DateTime tempDT = DateTime.Parse(alarm["DateTime"].ToString());
+                    if ((tempDT.Hour == DateTime.Now.Hour) &&
+                        (tempDT.Minute == DateTime.Now.Minute))
+                    {
+                        Console.WriteLine(alarm["Name"].ToString() + " is now active");
+                        Dictionary<string, string> tempDict = new Dictionary<string,string>();
+                        tempDict["Enabled"] = "0";
+                        database.Update(DatabaseProtocol.Alarms, tempDict, "Name = '" + alarm["Name"] + "' AND DateTime = '" + alarm["DateTime"] + "'");
+                    }
+                }
+            }
         }
 
         void server_ServerListening()

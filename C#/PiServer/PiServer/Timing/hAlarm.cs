@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using HomeControlProtocol;
 
 namespace PiServer
 {
@@ -19,20 +20,27 @@ namespace PiServer
         {
             name = Name;
             alarmDateTime = alarm;
-            timer = new Timer(1000);
+            SQLiteDatabase database = new SQLiteDatabase("saved.db3");
+            Dictionary<string, string> alarmDict = new Dictionary<string,string>();
+            alarmDict["Enabled"] = "1";
+            alarmDict["Name"] = Name;
+            alarm = alarm.AddSeconds(60-alarm.Second);
+            alarmDict["DateTime"] = alarm.ToString();
+            database.Insert(DatabaseProtocol.Alarms,alarmDict);
+            /*timer = new Timer(1000);
             timer.Elapsed += timer_Elapsed;
             timer.AutoReset = true;
-            timer.Start();
+            timer.Start();*/
         }
 
-        void timer_Elapsed(object sender, ElapsedEventArgs e)
+        /*void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            /*if (DateTime.Now.Year == alarmDateTime.Year)
+            if (DateTime.Now.Year == alarmDateTime.Year)
             {
                 if (DateTime.Now.Month == alarmDateTime.Month)
                 {
                     if (DateTime.Now.Day == alarmDateTime.Day)
-                    {*/
+                    {
                         if (DateTime.Now.Hour == alarmDateTime.Hour)
                         {
                             if (DateTime.Now.Minute == alarmDateTime.Minute)
@@ -41,9 +49,9 @@ namespace PiServer
                                 timer.Stop();
                             }
                         }
-                    /*}
+                    }
                 }
-            }*/
-        }
+            }
+        }*/
     }
 }

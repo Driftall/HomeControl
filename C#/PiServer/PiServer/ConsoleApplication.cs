@@ -51,7 +51,7 @@ namespace PiServer
                         }
                     case "alarm":
                         {
-                            hAlarm tempAlarm = new hAlarm("Test alarm", DateTime.Now.AddSeconds(5));
+                            hAlarm tempAlarm = new hAlarm("Test alarm", DateTime.Now.AddSeconds(10));
                             tempAlarm.AlarmActive += alarm_AlarmActive;
                             break;
                         }
