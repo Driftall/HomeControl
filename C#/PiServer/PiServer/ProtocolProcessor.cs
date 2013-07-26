@@ -14,6 +14,7 @@ namespace PiServer
     {
         public HomeServer server;
         public Dictionary<string, string> protocol;
+        public Voice voice;
         Timer timeChecker;
         public ProtocolProcessor()
         {
@@ -24,6 +25,8 @@ namespace PiServer
             server.DebugReceivedFromClient += server_DebugReceivedFromClient;
             server.ValueUpdatedByClient += server_ValueUpdatedByClient;
             server.MessageReceivedFromClient += server_MessageReceivedFromClient;
+
+            voice = new Voice();
 
             timeChecker = new Timer(30000);
             timeChecker.Elapsed += timeChecker_Elapsed;
@@ -37,6 +40,22 @@ namespace PiServer
         void timeChecker_Elapsed(object sender, ElapsedEventArgs e)
         {
             SQLiteDatabase database = new SQLiteDatabase("saved.db3");
+            String time = database.ExecuteScalar("SELECT Data FROM staticEvents WHERE Name = 'wakeupAlarm'");
+            DateTime tempTime = DateTime.Parse(time);
+            if ((tempTime.Hour == DateTime.Now.Hour) && (tempTime.Minute == DateTime.Now.Minute))
+            {
+                Weather weather = Wunderground.GetWeather("IP26 4LB");
+                String timeString = DateTime.Now.Hour + ":" + DateTime.Now.Minute + " ";
+                if(DateTime.Now.Hour < 12)
+                    timeString = timeString + "AM";
+                else
+                    timeString = timeString + "PM";
+                String weatherDescString;
+                //if(weatherDescString.StartsWith("Partlweather.WeatherDesc;
+                String wakeupString = "Good Morning Sir, it is " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ", the weather in " + weather.City + " is " + weather.TempC + " degrees and " + weather.WeatherDesc;
+                voice.voice.SpeakAsync(wakeupString); 
+                Console.WriteLine(wakeupString);
+            }
             DataTable alarms = database.GetDataTable("SELECT * FROM " + DatabaseProtocol.Alarms + ";");
             foreach (DataRow alarm in alarms.Rows)
             {
@@ -114,6 +133,14 @@ namespace PiServer
                     foreach (string lClient in clients)
                     {
                         server.SendMessageToClient(lClient, client + ">Battery is 100%");
+                    }
+                }
+                if (value == "30")
+                {
+                    ArrayList clients = server.GetClientList();
+                    foreach (string lClient in clients)
+                    {
+                        server.SendMessageToClient(lClient, client + ">Battery low (30%)");
                     }
                 }
             }

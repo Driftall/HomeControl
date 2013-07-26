@@ -55,6 +55,55 @@ namespace PiServer
                             tempAlarm.AlarmActive += alarm_AlarmActive;
                             break;
                         }
+                    case "wakeup":
+                        {
+                            Weather weather = Wunderground.GetWeather("IP26 4LB");
+                            DateTime tempTime = DateTime.Now;
+                            String finalString;
+                            String hourString;
+                            String minuteString;
+                            String amPMstring;
+                            String dateString;
+                            if (tempTime.Hour > 12)
+                            {
+                                amPMstring = "PM";
+                                hourString = (tempTime.Hour - 12).ToString();
+                            }
+                            else
+                            {
+                                amPMstring = "AM";
+                                hourString = tempTime.Hour.ToString();
+                            }
+                            if (tempTime.Minute == 0)
+                                minuteString = "";
+                            else
+                            {
+                                minuteString = ":";
+                                if (tempTime.Minute < 10)
+                                    minuteString = minuteString + "0" + tempTime.Minute.ToString();
+                                else
+                                    minuteString = tempTime.Minute.ToString();
+                            }
+                            dateString = "today is Friday the 26th of July";
+                            finalString = hourString + minuteString + " " + amPMstring + ", " + dateString;
+                            //String weatherDescString;
+                            //if(weatherDescString.StartsWith("Partlweather.WeatherDesc;
+                            String wakeupString = "Good Morning Sir, it is " + finalString + ", the weather in " + weather.City + " is " + weather.TempC + " degrees and " + weather.WeatherDesc;
+                            cpu.voice.voice.SpeakAsync(wakeupString);
+                            Console.WriteLine(wakeupString);
+                            break;
+                        }
+                    case "setwakeup":
+                        {
+                            DateTime wakeup = new DateTime(1, 1, 1, 8, 0, 0);
+                            SQLiteDatabase sqlite = new SQLiteDatabase("saved.db3");
+                            Dictionary<string, string> table = new Dictionary<string,string>();
+                            table["Name"] = "wakeupAlarm";
+                            table["Data"] = wakeup.ToShortTimeString();
+                            sqlite.Update("staticEvents", table, "Name = 'wakeupAlarm'");
+                            //sqlite.Insert("staticEvents", table);
+                            break;
+                        }
                 }
             }
         }
