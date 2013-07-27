@@ -25,6 +25,7 @@ namespace HomeControlProtocol
         public event OnMessageReceivedFromClientHandler MessageReceivedFromClient;
 
         Server server;
+        UDPServer UDPserver;
         Arduino arduino;
         Timer arduinoTimer;
 
@@ -40,7 +41,12 @@ namespace HomeControlProtocol
             server.DataReceivedFromClient += server_DataReceivedFromClient;
             server.MessageReceivedFromClient += server_MessageReceivedFromClient;
 
-            if (COMPort != "") 
+            UDPserver = new UDPServer();
+            UDPserver.DebugReceivedFromClient += UDPserver_DebugReceivedFromClient;
+            UDPserver.DataReceivedFromClient += UDPserver_DataReceivedFromClient;
+            UDPserver.MessageReceivedFromClient += UDPserver_MessageReceivedFromClient;
+
+            if (COMPort != "")
             {
                 arduino = new Arduino(COMPort);
                 arduinoConnected = true;
@@ -53,6 +59,29 @@ namespace HomeControlProtocol
                 arduinoTimer.AutoReset = true;
                 arduinoTimer.Elapsed += arduinoTimer_Elapsed;
             }
+        }
+
+        void UDPserver_DebugReceivedFromClient(string client, string debug)
+        {
+            string message = debug.Remove(0, 4);
+            string device = debug.Remove(4);
+            DebugReceivedFromClient(client, device, message);
+        }
+
+        void UDPserver_DataReceivedFromClient(string client, string data)
+        {
+            string device = data.Remove(4);
+            string command = data.Remove(0, 4);
+            string value = command.Remove(0, 3);
+            if (command.StartsWith(DataProtocol.changedValue))
+            {
+                ValueUpdatedByClient(client, device, value);
+            }
+        }
+
+        void UDPserver_MessageReceivedFromClient(string client, string message)
+        {
+            MessageReceivedFromClient(client, message);
         }
 
         void arduinoTimer_Elapsed(object sender, ElapsedEventArgs e)
