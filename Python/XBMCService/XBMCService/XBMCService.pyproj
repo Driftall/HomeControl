@@ -24,8 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="autoexec.py" />
-    <Compile Include="idletime.py" />
-    <Compile Include="playeractions.py" />
+    <Compile Include="XBMCService.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>
