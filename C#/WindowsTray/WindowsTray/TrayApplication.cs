@@ -18,7 +18,6 @@ namespace WindowsTray
 
         private System.ComponentModel.IContainer components;	// a list of components to dispose when the context is disposed
         private NotifyIcon notifyIcon;				            // the icon that sits in the system tray
-        private Timer timer;
         private ProtocolProcessor cpu;
 
         public TrayApplication()
@@ -29,15 +28,6 @@ namespace WindowsTray
             int.TryParse(Settings.getSetting(Settings.Port), out port);
             cpu = new ProtocolProcessor(Environment.MachineName, Settings.getSetting(Settings.IP), port);
             cpu.Notify += cpu_Notify;
-            timer = new Timer();
-            timer.Interval = 10000;
-            timer.Tick += timer_Tick;
-            timer.Enabled = true;
-        }
-
-        void timer_Tick(object sender, EventArgs e)
-        {
-            cpu.timerTick();
         }
 
         void cpu_Notify(int timeout, string tipTitle, string tipText, ToolTipIcon tipIcon)

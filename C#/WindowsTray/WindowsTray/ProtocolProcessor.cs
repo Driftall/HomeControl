@@ -23,6 +23,7 @@ namespace WindowsTray
         float lastBatteryPercentage;
 
         HomeClient client;
+        Timer timer;
 
         public ProtocolProcessor(String clientName, String IP, int Port)
         {
@@ -33,6 +34,11 @@ namespace WindowsTray
             Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             Microsoft.Win32.SystemEvents.PowerModeChanged += new Microsoft.Win32.PowerModeChangedEventHandler(SystemEvents_PowerModeChanged);
 
+            timer = new Timer();
+            timer.Interval = 10000;
+            timer.Tick += timer_Tick;
+            timer.Enabled = true;
+
             client = new HomeClient(clientName);
             client.Connected += client_Connected;
             client.ConnectionFailed += client_ConnectionFailed;
@@ -41,6 +47,19 @@ namespace WindowsTray
             client.SettingSentFromServer += client_SettingSentFromServer;
             client.MessageReceivedFromServer += client_MessageReceivedFromServer;
             client.Connect(IP, Port);
+        }
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            if (isLaptop)
+            {
+                float batteryPercentage = SystemInformation.PowerStatus.BatteryLifePercent * 100;
+                if (batteryPercentage != lastBatteryPercentage)
+                {
+                    lastBatteryPercentage = batteryPercentage;
+                    client.ChangeValueOnServer(DeviceProtocol.BatteryPercentage, batteryPercentage.ToString());
+                }
+            }
         }
 
         void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
@@ -106,35 +125,6 @@ namespace WindowsTray
         void client_MessageReceivedFromServer(string data)
         {
             Notify(5000, "Server Message", data, ToolTipIcon.Info);
-        }
-
-        public void timerTick()
-        {
-            if (isLaptop)
-            {
-                float batteryPercentage = SystemInformation.PowerStatus.BatteryLifePercent * 100;
-                if (batteryPercentage != lastBatteryPercentage)
-                {
-                    lastBatteryPercentage = batteryPercentage;
-                    client.ChangeValueOnServer(DeviceProtocol.BatteryPercentage, batteryPercentage.ToString());
-                }
-            }
-        }
-
-        //http://stackoverflow.com/questions/1069103/how-to-get-my-own-ip-address-in-c
-        string getLocalIP()
-        {
-            IPHostEntry host;
-            string localIP = "?";
-            host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
-            {
-                if (ip.AddressFamily.ToString() == "InterNetwork")
-                {
-                    localIP = ip.ToString();
-                }
-            }
-            return localIP;
         }
     }
 }
