@@ -20,6 +20,8 @@ namespace WindowsTray
         private NotifyIcon notifyIcon;				            // the icon that sits in the system tray
         private ProtocolProcessor cpu;
 
+        private FormSettings formSettings;
+
         public TrayApplication()
         {
             InitializeContext();
@@ -55,7 +57,35 @@ namespace WindowsTray
 
         void notifyIcon_DoubleClick(object sender, EventArgs e)
         {
-            DialogResult result = new FormSettings().ShowDialog();
+            formSettings = new FormSettings();
+            formSettings.OnDataPassed += settingsForm_OnDataPassed;
+            DialogResult result = formSettings.ShowDialog();
+        }
+
+        void settingsForm_OnDataPassed(string data)
+        {
+            switch (data)
+            {
+                case "connect":
+                    int port;
+                    int.TryParse(Settings.getSetting(Settings.Port), out port);
+                    cpu.client.Connect(Settings.getSetting(Settings.IP), port);
+                    break;
+                case "disconnect":
+                    cpu.client.Disconnect();
+                    break;
+                case "connectionStatus":
+                    if (cpu.client.getConnectionStatus())
+                    {
+                        formSettings.setConnectionStatus("Status: Connected");
+                    }
+                    else
+                    {
+                        formSettings.setConnectionStatus("Status: Disconnected");
+                        //TODO: FUTURE: Automatically update the status
+                    }
+                    break;
+            }
         }
 
         private void SettingsItem_Click(object sender, EventArgs e)

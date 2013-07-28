@@ -98,5 +98,10 @@ namespace WindowsTray
         {
             client.SendMessageToServer(message);
         }
+
+        public bool getConnectionStatus()
+        {
+            return client.connectionStatus;
+        }
     }
 }

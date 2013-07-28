@@ -10,8 +10,11 @@ using System.Windows.Forms;
 
 namespace WindowsTray
 {
+    public delegate void OnDataPassedHandler(String data);
     public partial class FormSettings : Form
     {
+        public event OnDataPassedHandler OnDataPassed;
+
         public FormSettings()
         {
             InitializeComponent();
@@ -27,12 +30,29 @@ namespace WindowsTray
         {
             Settings.saveSetting(Settings.IP, textBoxIP.Text);
             Settings.saveSetting(Settings.Port, textBoxPort.Text);
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            //this.DialogResult = System.Windows.Forms.DialogResult.OK;
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+        }
+
+        private void buttonServerConnect_Click(object sender, EventArgs e)
+        {
+            OnDataPassed("connect");
+            OnDataPassed("connectionStatus");
+        }
+
+        private void buttonServerDisconnect_Click(object sender, EventArgs e)
+        {
+            OnDataPassed("disconnect");
+            OnDataPassed("connectionStatus");
+        }
+
+        public void setConnectionStatus(string status)
+        {
+            labelServerStatus.Text = status;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace WindowsTray
         public bool isLaptop = true;
         float lastBatteryPercentage;
 
-        HomeClient client;
+        public HomeClient client;
         Timer timer;
 
         public ProtocolProcessor(String clientName, String IP, int Port)
