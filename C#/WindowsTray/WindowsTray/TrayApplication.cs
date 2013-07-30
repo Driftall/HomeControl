@@ -55,13 +55,6 @@ namespace WindowsTray
             notifyIcon.DoubleClick += notifyIcon_DoubleClick;
         }
 
-        void notifyIcon_DoubleClick(object sender, EventArgs e)
-        {
-            formSettings = new FormSettings();
-            formSettings.OnDataPassed += settingsForm_OnDataPassed;
-            DialogResult result = formSettings.ShowDialog();
-        }
-
         void settingsForm_OnDataPassed(string data)
         {
             switch (data)
@@ -88,9 +81,39 @@ namespace WindowsTray
             }
         }
 
+        void notifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            if (formSettings != null)
+            {
+                if (formSettings.formOpen == false)
+                {
+                    formSettings = new FormSettings();
+                    formSettings.formOpen = true;
+                    formSettings.OnDataPassed += settingsForm_OnDataPassed;
+                    DialogResult result = formSettings.ShowDialog();
+                    formSettings.formOpen = false;
+                }
+            }   
+        }
+
         private void SettingsItem_Click(object sender, EventArgs e)
         {
-            DialogResult result = new FormSettings().ShowDialog();
+            if (formSettings == null)
+            {
+                formSettings = new FormSettings();
+                formSettings.formOpen = true;
+                formSettings.OnDataPassed += settingsForm_OnDataPassed;
+                DialogResult result = formSettings.ShowDialog();
+                formSettings.formOpen = false;
+            }
+            else if (formSettings.formOpen == false)
+            {
+                formSettings = new FormSettings();
+                formSettings.formOpen = true;
+                formSettings.OnDataPassed += settingsForm_OnDataPassed;
+                DialogResult result = formSettings.ShowDialog();
+                formSettings.formOpen = false;
+            }
         }
 
         private void ExitItem_Click(object sender, EventArgs e)

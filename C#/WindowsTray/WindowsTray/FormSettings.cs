@@ -14,6 +14,7 @@ namespace WindowsTray
     public partial class FormSettings : Form
     {
         public event OnDataPassedHandler OnDataPassed;
+        public bool formOpen = false;
 
         public FormSettings()
         {
