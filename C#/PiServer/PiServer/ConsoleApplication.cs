@@ -57,13 +57,15 @@ namespace PiServer
                         }
                     case "wakeup":
                         {
-                            Weather weather = Wunderground.GetWeather("IP26 4LB");
+                            Weather weather = Wunderground.GetWeather("location"); //TODO: Settings stored location
                             DateTime tempTime = DateTime.Now;
                             String finalString;
                             String hourString;
                             String minuteString;
                             String amPMstring;
                             String dateString;
+                            String[] days = { "", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+                            String[] months = {"", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
                             if (tempTime.Hour > 12)
                             {
                                 amPMstring = "PM";
@@ -82,13 +84,20 @@ namespace PiServer
                                 if (tempTime.Minute < 10)
                                     minuteString = minuteString + "0" + tempTime.Minute.ToString();
                                 else
-                                    minuteString = tempTime.Minute.ToString();
+                                    minuteString = minuteString + tempTime.Minute.ToString();
                             }
-                            dateString = "today is Friday the 26th of July";
+                            dateString = "today is " + days[(int)tempTime.DayOfWeek] + " the " + tempTime.Day + "th of " + months[tempTime.Month];
                             finalString = hourString + minuteString + " " + amPMstring + ", " + dateString;
-                            //String weatherDescString;
-                            //if(weatherDescString.StartsWith("Partlweather.WeatherDesc;
-                            String wakeupString = "Good Morning Sir, it is " + finalString + ", the weather in " + weather.City + " is " + weather.TempC + " degrees and " + weather.WeatherDesc;
+                            String weatherDescString = weather.WeatherDesc;
+                            if (weatherDescString.StartsWith("Scattered"))
+                            {
+                                weatherDescString = "with " + weatherDescString;
+                            }
+                            else
+                            {
+                                weatherDescString = "and " + weatherDescString;
+                            }
+                            String wakeupString = "Good Morning Sir, it is " + finalString + ", the weather in " + weather.City + " is " + weather.TempC + " degrees " + weatherDescString;
                             cpu.voice.voice.SpeakAsync(wakeupString);
                             Console.WriteLine(wakeupString);
                             break;

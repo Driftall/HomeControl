@@ -40,21 +40,12 @@ namespace PiServer
         void timeChecker_Elapsed(object sender, ElapsedEventArgs e)
         {
             SQLiteDatabase database = new SQLiteDatabase("saved.db3");
+            //TODO: Add database existance checker
             String time = database.ExecuteScalar("SELECT Data FROM staticEvents WHERE Name = 'wakeupAlarm'");
             DateTime tempTime = DateTime.Parse(time);
             if ((tempTime.Hour == DateTime.Now.Hour) && (tempTime.Minute == DateTime.Now.Minute))
             {
-                Weather weather = Wunderground.GetWeather("IP26 4LB");
-                String timeString = DateTime.Now.Hour + ":" + DateTime.Now.Minute + " ";
-                if(DateTime.Now.Hour < 12)
-                    timeString = timeString + "AM";
-                else
-                    timeString = timeString + "PM";
-                String weatherDescString;
-                //if(weatherDescString.StartsWith("Partlweather.WeatherDesc;
-                String wakeupString = "Good Morning Sir, it is " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ", the weather in " + weather.City + " is " + weather.TempC + " degrees and " + weather.WeatherDesc;
-                voice.voice.SpeakAsync(wakeupString); 
-                Console.WriteLine(wakeupString);
+                //TODO: Add wakeup alarm
             }
             DataTable alarms = database.GetDataTable("SELECT * FROM " + DatabaseProtocol.Alarms + ";");
             foreach (DataRow alarm in alarms.Rows)
