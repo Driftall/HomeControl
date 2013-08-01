@@ -28,7 +28,7 @@ namespace PiServer
                     case "debug":
                         {
                             string debug = input.Remove(0, cmd.Length + 1);
-                            cpu.server.SendDebugToClient("BLAKE-PC", DeviceProtocol.DoorLCD, debug);
+                            //cpu.server.SendDebugToClient("BLAKE-PC", DeviceProtocol.DoorLCD, debug);
                             break;
                         }
                     case "message":
@@ -52,7 +52,6 @@ namespace PiServer
                     case "alarm":
                         {
                             hAlarm tempAlarm = new hAlarm("Test alarm", DateTime.Now.AddSeconds(10));
-                            tempAlarm.AlarmActive += alarm_AlarmActive;
                             break;
                         }
                     case "wakeup":
@@ -111,6 +110,11 @@ namespace PiServer
                             table["Data"] = wakeup.ToShortTimeString();
                             sqlite.Update("staticEvents", table, "Name = 'wakeupAlarm'");
                             //sqlite.Insert("staticEvents", table);
+                            break;
+                        }
+                    case "testarduino":
+                        {
+                            cpu.server.SendSettingToClient("arduino", DeviceProtocol.Beep, VariableProtocol.On);
                             break;
                         }
                 }

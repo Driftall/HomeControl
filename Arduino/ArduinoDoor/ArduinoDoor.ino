@@ -26,45 +26,54 @@ long messageTimeout = 2;
 const byte rows = 4; //four rows
 const byte cols = 3; //three columns
 char keys[rows][cols] = {
-  {'1','2','3'},
-  {'4','5','6'},
-  {'7','8','9'},
-  {'*','0','#'}
+  {
+    '1','2','3'      }
+  ,
+  {
+    '4','5','6'      }
+  ,
+  {
+    '7','8','9'      }
+  ,
+  {
+    '*','0','#'      }
 };
 byte rowPins[rows] = {
   7, 2, 3,5}; //connect to the row pinouts of the keypad
 byte colPins[cols] = {
   6,8,4}; //connect to the column pinouts of the keypad
 
-String months[12] = {"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec" };
-String days[8] = {"", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+String months[12] = {
+  "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec" };
+String days[8] = {
+  "", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
 //SocketProtocol
-String const cID = "0/";
-String const cConnected = "1/";
-String const cDebug = "2/";
-String const cData = "3/";
-String const cMessage = "4/";
+byte const cID = '0';
+byte const cConnected = '1';
+byte const cDebug = '2';
+byte const cData = '3';
+byte const cMessage = '4';
 
 //DataProtocol
-String const dChangedValue = "00/";
-String const dSetValue = "02/";
+byte const dChangedValue = '0';
+byte const dSetValue = '2';
 
 //DeviceProtocol
-String const aDebug = "000/";
-String const aLockStatus = "001/";
-String const aIP = "002/";
-String const aBatteryPercentage = "003/";
-String const aBeep = "004/";
-String const aDoorLCD = "005/";
-String const aDateTime = "006/";
+byte const aDebug = '0';
+byte const aLockStatus = '1';
+byte const aIP = '2';
+byte const aBatteryPercentage = '3';
+byte const aBeep = '4';
+byte const aDoorLCD = '5';
+byte const aDateTime = '6';
 
 //VariableProtocol
-String const vOff = "0";
-String const vOn = "1";
-String const vUnlock = "2";
-String const vQuickLock = "3";
-String const vFullLock = "4";
+byte const vOff = '0';
+byte const vOn = '1';
+byte const vUnlock = '2';
+byte const vQuickLock = '3';
+byte const vFullLock = '4';
 
 String arduinoID = "Arduino_Door";
 
@@ -85,12 +94,27 @@ void setup()
   Serial.begin(9600);
   delay(500);
   Serial.println(cID + arduinoID);
+  Serial.println("Home Control Suite - Arduino Door");
   lcdHomeScreen();
   timerCount = millis();
 }
 
 void loop()
 {
+  if(Serial.available() >= 3)
+  {
+    byte socketData = Serial.read();
+    if(socketData == cData) // Data received from server
+    {
+      byte deviceData = Serial.read();
+      byte dataData = Serial.read();
+      if(dataData == dSetValue) // Set value from server
+      {
+        byte variableData = Serial.read();
+        //Process data
+      }
+    }
+  }
   long mil = millis();
   if(mil - timerCount > timerInterval)
   {
@@ -129,7 +153,7 @@ void timerTick()
     }
     else
     {
-     messageCurrent++; 
+      messageCurrent++; 
     }
   }
 }
@@ -259,36 +283,5 @@ void lcdCodeTimeoutScreen()
   lcd.print("  Code Timeout  ");  
 }
 
-  /*if(Serial.available() >= 5)
- {
- String socketData = "";
- for(int i = 0;i<2;i++)
- {
- socketData.concat(Serial.read());
- }
- if(socketData == cData)
- {
- String dataData = "";
- for(int i = 0;i<3;i++)
- {
- dataData.concat(Serial.read());
- }
- String arduinoData = "";
- for(int i = 0;i<4;i++)
- {
- arduinoData.concat(Serial.read());
- }
- String data = "";
- while(Serial.available() > 0)
- {
- data.concat(Serial.read());
- }
- if(arduinoData == aDoorLCD)
- {
- if(dataData == dSetValue)
- {
- lcd.print(data); 
- }
- }
- }
- }*/
+
+

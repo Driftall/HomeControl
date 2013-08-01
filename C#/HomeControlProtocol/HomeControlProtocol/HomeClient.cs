@@ -10,8 +10,8 @@ namespace WindowsTray
     public delegate void ConnectedHandler(string welcomeMessage);
     public delegate void ConnectionFailedHandler();
     public delegate void DisconnectedHandler();
-    public delegate void OnDebugReceivedFromServerHandler(string device, string debug);
-    public delegate void OnSettingSentFromServerHandler(string device, string value); //could be a Setting?
+    public delegate void OnDebugReceivedFromServerHandler(byte device, string debug);
+    public delegate void OnSettingSentFromServerHandler(byte device, string value); //could be a Setting?
     public delegate void OnMessageReceivedFromServerHandler(string message);
     //http://www.codeproject.com/Articles/24948/Three-Ways-To-Extend-A-Class
     public class HomeClient
@@ -61,20 +61,24 @@ namespace WindowsTray
             Disconnected();
         }
 
-        void client_DebugReceivedFromServer(string debug)
+        void client_DebugReceivedFromServer(byte[] debug)
         {
-            string message = debug.Remove(0, 4);
-            string device = debug.Remove(4);
+            byte device = debug[0];
+            byte[] bytes = new byte[debug.Length - 1];
+            System.Buffer.BlockCopy(debug, 1, bytes, 0, bytes.Length);
+            string message = Encoding.UTF8.GetString(bytes);
             DebugReceivedFromServer(device, message);
         }
 
-        void client_DataReceivedFromServer(string data)
+        void client_DataReceivedFromServer(byte[] data)
         {
-            string device = data.Remove(4);
-            string command = data.Remove(0, 4);
-            if (command.StartsWith(DataProtocol.setValue))
+            byte device = data[0];
+            byte command = data[1];
+            if (command == DataProtocol.setValue)
             {
-                string value = command.Remove(0, 3);
+                byte[] bytes = new byte[data.Length - 2];
+                System.Buffer.BlockCopy(data, 2, bytes, 0, bytes.Length);
+                string value = Encoding.UTF8.GetString(bytes);
                 SettingSentFromServer(device, value);
             }
         }
@@ -84,14 +88,19 @@ namespace WindowsTray
             MessageReceivedFromServer(message);
         }
 
-        public void SendDebugToServer(string device, string debug)
+        public void SendDebugToServer(byte device, string debug)
         {
-            client.SendDebugToServer(device + debug);
+            byte[] bytesToSend = SocketLibrary.ConverterProtocol.AddProtocol(device, Encoding.UTF8.GetBytes(debug));
+            client.SendDebugToServer(bytesToSend);
         }
 
-        public void ChangeValueOnServer(string device, Object value)
+        public void ChangeValueOnServer(byte device, String value)
         {
-            client.SendDataToServer(device + DataProtocol.changedValue + value);
+            byte[] bytesToSend = new byte[value.Length + 2];
+            bytesToSend[0] = device;
+            bytesToSend[1] = DataProtocol.changedValue;
+            System.Buffer.BlockCopy(Encoding.UTF8.GetBytes(value), 0, bytesToSend, 2, value.Length);
+            client.SendDataToServer(bytesToSend);
         }
 
         public void SendMessageToServer(string message)

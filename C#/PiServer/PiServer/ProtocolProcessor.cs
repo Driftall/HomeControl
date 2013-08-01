@@ -13,12 +13,12 @@ namespace PiServer
     class ProtocolProcessor
     {
         public HomeServer server;
-        public Dictionary<string, string> protocol;
+        public Dictionary<byte, String> protocol;
         public Voice voice;
         Timer timeChecker;
         public ProtocolProcessor()
         {
-            server = new HomeServer("Connected to Home Control Suite PiServer");//,"COM3");//,"ttyACM0");
+            server = new HomeServer("Connected to Home Control Suite PiServer","COM3");//,"ttyACM0");
             server.ServerListening += server_ServerListening;
             server.ClientConnected += server_ClientConnected;
             server.ClientDisconnected += server_ClientDisconnected;
@@ -34,7 +34,7 @@ namespace PiServer
             timeChecker.Start();
 
             server.startServer(9999); //TODO: Change port to variable
-            protocol = new Dictionary<string, string>();
+            protocol = new Dictionary<byte, String>();
         }
 
         void timeChecker_Elapsed(object sender, ElapsedEventArgs e)
@@ -75,14 +75,14 @@ namespace PiServer
             Console.WriteLine(String.Concat(client,">Connected"));
         }
 
-        void server_DebugReceivedFromClient(string client, string device, string debug)
+        void server_DebugReceivedFromClient(string client, byte device, string debug)
         {
             Console.WriteLine(client + ">Debug>" + debug);
         }
 
-        void server_ValueUpdatedByClient(string client, string device, string value)
+        void server_ValueUpdatedByClient(string client, byte device, String value)
         {
-            Console.WriteLine(client + ">Data>" + device + ">Update>" + value);
+            Console.WriteLine(client + ">Data>" + ProtocolConversion.getProtocolName(device) + ">Update>" + value);
             protocol[device] = value;
             if (device == DeviceProtocol.Debug)
             {

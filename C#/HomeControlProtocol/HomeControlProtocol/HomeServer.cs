@@ -12,8 +12,8 @@ namespace HomeControlProtocol
     public delegate void ServerListeningHandler();
     public delegate void ClientConnectedHandler(string client);
     public delegate void ClientDisconnectedHandler(string client);
-    public delegate void OnDebugReceivedFromClientHandler(string client, string device, string debug);
-    public delegate void OnValueUpdatedByClientHandler(string client, string device, string value);
+    public delegate void OnDebugReceivedFromClientHandler(string client, byte device, string debug);
+    public delegate void OnValueUpdatedByClientHandler(string client, byte device, string value);
     public delegate void OnMessageReceivedFromClientHandler(string client, string message);
     public class HomeServer
     {
@@ -61,20 +61,25 @@ namespace HomeControlProtocol
             }
         }
 
-        void UDPserver_DebugReceivedFromClient(string client, string debug)
+        #region UDPserver
+        void UDPserver_DebugReceivedFromClient(string client, byte[] debug)
         {
-            string message = debug.Remove(0, 4);
-            string device = debug.Remove(4);
+            byte device = debug[0];
+            byte[] bytes = new byte[debug.Length - 1];
+            System.Buffer.BlockCopy(debug, 1, bytes, 0, bytes.Length);
+            string message = Encoding.UTF8.GetString(bytes);
             DebugReceivedFromClient(client, device, message);
         }
 
-        void UDPserver_DataReceivedFromClient(string client, string data)
+        void UDPserver_DataReceivedFromClient(string client, byte[] data)
         {
-            string device = data.Remove(4);
-            string command = data.Remove(0, 4);
-            string value = command.Remove(0, 3);
-            if (command.StartsWith(DataProtocol.changedValue))
+            byte device = data[0];
+            byte command = data[1];
+            if (command == DataProtocol.setValue)
             {
+                byte[] bytes = new byte[data.Length - 2];
+                System.Buffer.BlockCopy(data, 2, bytes, 0, bytes.Length);
+                string value = Encoding.UTF8.GetString(bytes);
                 ValueUpdatedByClient(client, device, value);
             }
         }
@@ -83,6 +88,83 @@ namespace HomeControlProtocol
         {
             MessageReceivedFromClient(client, message);
         }
+        #endregion
+        #region Arduino
+        void arduino_ArduinoConnected(string client)
+        {
+            ClientConnected(client);
+        }
+
+        void arduino_ArduinoDisconnected(string client)
+        {
+            ClientDisconnected(client);
+        }
+
+        void arduino_DebugReceivedFromArduino(byte[] debug)
+        {
+            byte device = debug[0];
+            byte[] bytes = new byte[debug.Length - 1];
+            System.Buffer.BlockCopy(debug, 1, bytes, 0, bytes.Length);
+            string message = Encoding.UTF8.GetString(bytes);
+            DebugReceivedFromClient("arduino", device, message);
+        }
+
+        void arduino_DataReceivedFromArduino(byte[] data)
+        {
+            byte device = data[0];
+            byte command = data[1];
+            if (command == DataProtocol.changedValue)
+            {
+                byte[] bytes = new byte[data.Length - 2];
+                System.Buffer.BlockCopy(data, 2, bytes, 0, bytes.Length);
+                string value = Encoding.UTF8.GetString(bytes);
+                ValueUpdatedByClient("arduino", device, value);
+            }
+        }
+
+        void arduino_MessageReceivedFromArduino(string message)
+        {
+            MessageReceivedFromClient("arduino", message);
+        }
+        #endregion
+        #region Server
+        void server_ClientConnected(string client)
+        {
+            ClientConnected(client);
+        }
+
+        void server_ClientDisconnected(string client)
+        {
+            ClientDisconnected(client);
+        }
+
+        void server_DebugReceivedFromClient(string client, byte[] debug)
+        {
+            byte device = debug[0];
+            byte[] bytes = new byte[debug.Length - 1];
+            System.Buffer.BlockCopy(debug, 1, bytes, 0, bytes.Length);
+            string message = Encoding.UTF8.GetString(bytes);
+            DebugReceivedFromClient(client, device, message);
+        }
+
+        void server_DataReceivedFromClient(string client, byte[] data)
+        {
+            byte device = data[0];
+            byte command = data[1];
+            if (command == DataProtocol.setValue)
+            {
+                byte[] bytes = new byte[data.Length - 2];
+                System.Buffer.BlockCopy(data, 2, bytes, 0, bytes.Length);
+                string value = Encoding.UTF8.GetString(bytes);
+                ValueUpdatedByClient(client, device, value);
+            }
+        }
+
+        void server_MessageReceivedFromClient(string client, string message)
+        {
+            MessageReceivedFromClient(client, message);
+        }
+        #endregion
 
         void arduinoTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -97,8 +179,12 @@ namespace HomeControlProtocol
             if (hour.Length != 2) hour = "0" + hour;
             String minute = DateTime.Now.Minute.ToString();
             if (minute.Length != 2) minute = "0" + minute;
-            string toSend = DeviceProtocol.DateTime + DataProtocol.setValue + day.ToString() + " " + date + " " + month + " " + hour + ":" + minute;
-            arduino.SendDataToArduino(toSend);
+            string toSend = day.ToString() + " " + date + " " + month + " " + hour + ":" + minute;
+            byte[] bytesToSend = new byte[toSend.Length + 2];
+            bytesToSend[0] = DeviceProtocol.DateTime;
+            bytesToSend[1] = DataProtocol.setValue;
+            System.Buffer.BlockCopy(Encoding.UTF8.GetBytes(toSend), 0, bytesToSend, 2, toSend.Length);
+            arduino.SendDataToArduino(bytesToSend);
         }
 
         public ArrayList GetClientList()
@@ -120,89 +206,28 @@ namespace HomeControlProtocol
             }
         }
 
-        void arduino_ArduinoConnected(string client)
+        public void SendSettingToClient(string client, byte device, String value)
         {
-            ClientConnected(client);
-        }
-
-        void arduino_ArduinoDisconnected(string client)
-        {
-            ClientDisconnected(client);
-        }
-
-        void arduino_DebugReceivedFromArduino(string debug)
-        {
-            string debugLine = debug.Remove(0,2);
-            string debugDevice = debugLine.Remove(4);
-            string debugText = debugLine.Remove(0, 4);
-
-            DebugReceivedFromClient("arduino", debugDevice, debugLine);
-        }
-
-        void arduino_DataReceivedFromArduino(string data)
-        {
-            string device = data.Remove(4);
-            string command = data.Remove(0, 4);
-            string value = command.Remove(0, 3);
-            if (command.StartsWith(DataProtocol.changedValue))
-            {
-                ValueUpdatedByClient("arduino", device, value);
-            }
-        }
-
-        void arduino_MessageReceivedFromArduino(string message)
-        {
-            MessageReceivedFromClient("arduino", message);
-        }
-
-        void server_ClientConnected(string client)
-        {
-            ClientConnected(client);
-        }
-
-        void server_ClientDisconnected(string client)
-        {
-            ClientDisconnected(client);
-        }
-
-        void server_DebugReceivedFromClient(string client, string debug)
-        {
-            string message = debug.Remove(0, 4);
-            string device = debug.Remove(4);
-            DebugReceivedFromClient(client, device, message);
-        }
-
-        void server_DataReceivedFromClient(string client, string data)
-        {
-            string device = data.Remove(4);
-            string command = data.Remove(0, 4);
-            string value = command.Remove(0, 3);
-            if (command.StartsWith(DataProtocol.changedValue))
-            {
-                ValueUpdatedByClient(client, device, value);
-            }
-        }
-
-        void server_MessageReceivedFromClient(string client, string message)
-        {
-            MessageReceivedFromClient(client, message);
-        }
-
-        public void SendSettingToClient(string client, string device, Object value)
-        {
+            byte[] bytes = new byte[value.Length + 2];
+            bytes[0] = device;
+            bytes[1] = DataProtocol.setValue;
+            System.Buffer.BlockCopy(Encoding.UTF8.GetBytes(value), 0, bytes, 2, value.Length);
+            server.SendDataToClient(client, bytes);
             if (client == "arduino")
             {
-                arduino.SendDataToArduino(device + DataProtocol.setValue + value);
+                arduino.SendDataToArduino(bytes);
             }
             else
             {
-                server.SendDataToClient(client, device + DataProtocol.setValue + value);
+                server.SendDataToClient(client, bytes);
             }
         }
 
-        public void SendDebugToClient(string client, string device, Object value)
+        public void SendDebugToClient(string client, byte device, String value)
         {
-            server.SendDebugToClient(client, device + (string)value);
+            byte[] bytes = SocketLibrary.ConverterProtocol.AddProtocol(device, Encoding.UTF8.GetBytes(value)); 
+            System.Buffer.BlockCopy(Encoding.UTF8.GetBytes(value), 0, bytes, 1, value.Length);
+            server.SendDataToClient(client, bytes);
         }
 
         public void SendMessageToClient(string client, string message)
