@@ -28,6 +28,7 @@ namespace HomeControlProtocol
         public static readonly byte DateTime = 6;
         public static readonly byte Alarm = 7;
         public static readonly byte Timer = 8;
+        public static readonly byte XBMC = 9;
     }
 
     public class VariableProtocol
@@ -37,6 +38,11 @@ namespace HomeControlProtocol
         public static readonly string Unlock = "2";
         public static readonly string QuickLock = "3";
         public static readonly string FullLock = "4";
+        public static readonly string PlaybackStarted = "5";
+        public static readonly string PlaybackResumed = "6";
+        public static readonly string PlaybackPaused = "7";
+        public static readonly string PlaybackStopped = "8";
+        public static readonly string PlaybackEnded = "9";
     }
 
     public class DatabaseProtocol
@@ -70,6 +76,8 @@ namespace HomeControlProtocol
                 return "Alarm";
             else if (protocol == DeviceProtocol.Timer)
                 return "Timer";
+            else if (protocol == DeviceProtocol.XBMC)
+                return "XBMC";
             throw new Exception("Not added");
         }
     }

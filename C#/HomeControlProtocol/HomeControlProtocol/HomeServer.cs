@@ -75,7 +75,7 @@ namespace HomeControlProtocol
         {
             byte device = data[0];
             byte command = data[1];
-            if (command == DataProtocol.setValue)
+            if (command == DataProtocol.changedValue)
             {
                 byte[] bytes = new byte[data.Length - 2];
                 System.Buffer.BlockCopy(data, 2, bytes, 0, bytes.Length);
@@ -197,9 +197,10 @@ namespace HomeControlProtocol
             ServerListening();
         }
 
-        public void startServer(int port)
+        public void startServer(int TCPport, int UDPport)
         {
-            server.Listen(port);
+            server.Listen(TCPport);
+            UDPserver.Listen(UDPport);
             if (arduinoConnected)
             {
                 arduino.Listen();

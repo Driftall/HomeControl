@@ -18,7 +18,7 @@ namespace PiServer
         Timer timeChecker;
         public ProtocolProcessor()
         {
-            server = new HomeServer("Connected to Home Control Suite PiServer","COM3");//,"ttyACM0");
+            server = new HomeServer("Connected to Home Control Suite PiServer");//,"COM3");//,"ttyACM0");
             server.ServerListening += server_ServerListening;
             server.ClientConnected += server_ClientConnected;
             server.ClientDisconnected += server_ClientDisconnected;
@@ -33,7 +33,7 @@ namespace PiServer
             timeChecker.AutoReset = true;
             timeChecker.Start();
 
-            server.startServer(9999); //TODO: Change port to variable
+            server.startServer(9999, 9998); //TODO: Change port to variable
             protocol = new Dictionary<byte, String>();
         }
 
