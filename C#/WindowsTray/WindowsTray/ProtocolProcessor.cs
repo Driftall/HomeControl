@@ -98,12 +98,12 @@ namespace WindowsTray
             Notify(5000, "Home Control Suite", "Connection lost", ToolTipIcon.Error);
         }
 
-        void client_DebugReceivedFromServer(string device, string debug)
+        void client_DebugReceivedFromServer(byte device, string debug)
         {
-            Notify(5000, "Debug Message", device + debug, ToolTipIcon.Info);
+            Notify(5000, "Debug Message", ProtocolConversion.getProtocolName(device) + debug, ToolTipIcon.Info);
         }
 
-        void client_SettingSentFromServer(string setting, string value)
+        void client_SettingSentFromServer(byte setting, string value)
         {
             if(setting == DeviceProtocol.LockStatus)
             {
