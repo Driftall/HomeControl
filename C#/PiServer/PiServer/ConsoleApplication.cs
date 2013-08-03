@@ -25,10 +25,10 @@ namespace PiServer
                 string cmd = input.Split(' ')[0];
                 switch (cmd)
                 {
-                    case "debug":
+                    case "say":
                         {
-                            string debug = input.Remove(0, cmd.Length + 1);
-                            //cpu.server.SendDebugToClient("BLAKE-PC", DeviceProtocol.DoorLCD, debug);
+                            string message = input.Remove(0, cmd.Length + 1);
+                            cpu.voice.Speak(message);
                             break;
                         }
                     case "message":
@@ -39,7 +39,7 @@ namespace PiServer
                         }
                     case "weather":
                         {
-                            Weather weather = Wunderground.GetWeather("IP26 4LB");
+                            Weather weather = Wunderground.GetWeather("EC1A 1BB");
                             Console.WriteLine("The weather in " + weather.City + "(" + weather.Postcode + ") is " + weather.TempC + " degrees celcius with " + weather.WeatherDesc);
                             break;
                         }
@@ -56,7 +56,7 @@ namespace PiServer
                         }
                     case "wakeup":
                         {
-                            Weather weather = Wunderground.GetWeather("location"); //TODO: Settings stored location
+                            Weather weather = Wunderground.GetWeather("EC1A 1BB"); //TODO: Settings stored location
                             DateTime tempTime = DateTime.Now;
                             String finalString;
                             String hourString;
@@ -97,7 +97,7 @@ namespace PiServer
                                 weatherDescString = "and " + weatherDescString;
                             }
                             String wakeupString = "Good Morning Sir, it is " + finalString + ", the weather in " + weather.City + " is " + weather.TempC + " degrees " + weatherDescString;
-                            cpu.voice.voice.SpeakAsync(wakeupString);
+                            cpu.voice.Speak(wakeupString);
                             Console.WriteLine(wakeupString);
                             break;
                         }
