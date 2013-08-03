@@ -36,8 +36,9 @@ class MyPlayer(xbmc.Player) :
 
 player=MyPlayer()
 
-address = ('localhost', 9998)
+address = ('192.168.0.117', 9998)
 client_socket = socket(AF_INET, SOCK_DGRAM)
+client_socket.sendto(str(bytearray([0])) + "HTPC" + str(bytearray([1])), address);
 
 VIDEO = 0
  

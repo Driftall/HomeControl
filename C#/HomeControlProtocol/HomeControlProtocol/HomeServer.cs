@@ -42,6 +42,7 @@ namespace HomeControlProtocol
             server.MessageReceivedFromClient += server_MessageReceivedFromClient;
 
             UDPserver = new UDPServer();
+            UDPserver.ClientConnected += UDPserver_ClientConnected;
             UDPserver.DebugReceivedFromClient += UDPserver_DebugReceivedFromClient;
             UDPserver.DataReceivedFromClient += UDPserver_DataReceivedFromClient;
             UDPserver.MessageReceivedFromClient += UDPserver_MessageReceivedFromClient;
@@ -62,6 +63,11 @@ namespace HomeControlProtocol
         }
 
         #region UDPserver
+        void UDPserver_ClientConnected(string client)
+        {
+            ClientConnected(client);
+        }
+
         void UDPserver_DebugReceivedFromClient(string client, byte[] debug)
         {
             byte device = debug[0];
