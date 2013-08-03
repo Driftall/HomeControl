@@ -58,6 +58,7 @@ namespace HomeControlProtocol
                 return "changedValue";
             else if(protocol == DataProtocol.setValue)
                 return "setValue";
+
             if (protocol == DeviceProtocol.Debug)
                 return "Debug";
             else if (protocol == DeviceProtocol.LockStatus)
@@ -78,7 +79,33 @@ namespace HomeControlProtocol
                 return "Timer";
             else if (protocol == DeviceProtocol.XBMC)
                 return "XBMC";
-            throw new Exception("Not added");
+            
+            return protocol.ToString();
+        }
+
+        public static string getVariableValue(string variable)
+        {
+            if (variable == VariableProtocol.Off)
+                return "Off";
+            else if (variable == VariableProtocol.On)
+                return "On";
+            else if (variable == VariableProtocol.Unlock)
+                return "Unlock";
+            else if (variable == VariableProtocol.QuickLock)
+                return "QuickLock";
+            else if (variable == VariableProtocol.FullLock)
+                return "FullLock";
+            else if (variable == VariableProtocol.PlaybackStarted)
+                return "PlaybackStarted";
+            else if (variable == VariableProtocol.PlaybackResumed)
+                return "PlaybackResumed";
+            else if (variable == VariableProtocol.PlaybackPaused)
+                return "PlaybackPaused";
+            else if (variable == VariableProtocol.PlaybackStopped)
+                return "PlaybackStopped";
+            else if (variable == VariableProtocol.PlaybackEnded)
+                return "PlaybackEnded";
+            return variable;
         }
     }
 }

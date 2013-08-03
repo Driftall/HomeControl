@@ -82,7 +82,7 @@ namespace PiServer
 
         void server_ValueUpdatedByClient(string client, byte device, String value)
         {
-            Console.WriteLine(client + ">Data>" + ProtocolConversion.getProtocolName(device) + ">Update>" + value);
+            Console.WriteLine(client + ">Data>" + ProtocolConversion.getProtocolName(device) + ">Update>" + ProtocolConversion.getVariableValue(value));
             protocol[device] = value;
             if (device == DeviceProtocol.Debug)
             {
