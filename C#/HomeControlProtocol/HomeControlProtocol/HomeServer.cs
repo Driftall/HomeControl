@@ -157,7 +157,7 @@ namespace HomeControlProtocol
         {
             byte device = data[0];
             byte command = data[1];
-            if (command == DataProtocol.setValue)
+            if (command == DataProtocol.changedValue)
             {
                 byte[] bytes = new byte[data.Length - 2];
                 System.Buffer.BlockCopy(data, 2, bytes, 0, bytes.Length);
@@ -219,7 +219,6 @@ namespace HomeControlProtocol
             bytes[0] = device;
             bytes[1] = DataProtocol.setValue;
             System.Buffer.BlockCopy(Encoding.UTF8.GetBytes(value), 0, bytes, 2, value.Length);
-            server.SendDataToClient(client, bytes);
             if (client == "arduino")
             {
                 arduino.SendDataToArduino(bytes);
