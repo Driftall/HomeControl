@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using HomeControlProtocol;
 using System.Timers;
+using System.Collections;
 
 namespace PiServer
 {
@@ -22,7 +23,8 @@ namespace PiServer
             while (run)
             {
                 string input = Console.ReadLine();
-                string cmd = input.Split(' ')[0];
+                string[] splitInput = input.Split(' ');
+                string cmd = splitInput[0];
                 switch (cmd)
                 {
                     case "say":
@@ -33,8 +35,20 @@ namespace PiServer
                         }
                     case "message":
                         {
-                            string message = input.Remove(0, cmd.Length + 1);
-                            cpu.server.SendMessageToClient("BLAKE-PC", message);
+                            ArrayList clients = cpu.server.GetClientList();
+                            if (clients.Contains(splitInput[1]))
+                            {
+                                string toSend = input.Remove(0, cmd.Length + splitInput[1].Length + 2);
+                                cpu.server.SendMessageToClient(splitInput[1], toSend);
+                            }
+                            else
+                            {
+                                string toSend = input.Remove(0, cmd.Length + 1);
+                                foreach (string client in clients)
+                                {
+                                    cpu.server.SendMessageToClient(client, toSend);
+                                }
+                            }
                             break;
                         }
                     case "weather":
