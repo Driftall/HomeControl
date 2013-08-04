@@ -7,6 +7,7 @@ using HomeControlProtocol;
 using System.Collections;
 using System.Timers;
 using System.Data;
+using System.IO;
 
 namespace PiServer
 {
@@ -18,7 +19,7 @@ namespace PiServer
         Timer timeChecker;
         public ProtocolProcessor()
         {
-            server = new HomeServer("Connected to Home Control Suite PiServer");//,"COM3");//,"ttyACM0");
+            server = new HomeServer("Connected to Home Control Suite PiServer", "/dev/ttyACM0");//,"COM3");
             server.ServerListening += server_ServerListening;
             server.ClientConnected += server_ClientConnected;
             server.ClientDisconnected += server_ClientDisconnected;
@@ -41,7 +42,7 @@ namespace PiServer
         {
             SQLiteDatabase database = new SQLiteDatabase("saved.db3");
             //TODO: Add database existance checker
-            String time = database.ExecuteScalar("SELECT Data FROM staticEvents WHERE Name = 'wakeupAlarm'");
+            /*String time = database.ExecuteScalar("SELECT Data FROM staticEvents WHERE Name = 'wakeupAlarm'");
             DateTime tempTime = DateTime.Parse(time);
             if ((tempTime.Hour == DateTime.Now.Hour) && (tempTime.Minute == DateTime.Now.Minute))
             {
@@ -62,7 +63,7 @@ namespace PiServer
                         database.Update(DatabaseProtocol.Alarms, tempDict, "Name = '" + alarm["Name"] + "' AND DateTime = '" + alarm["DateTime"] + "'");
                     }
                 }
-            }
+            }*/
         }
 
         void server_ServerListening()
@@ -95,6 +96,13 @@ namespace PiServer
 
                 }
             }
+            else if (device == DeviceProtocol.XBMC)
+            {
+                if (value == VariableProtocol.PlaybackStarted)
+                    server.SendSettingToClient("arduino", DeviceProtocol.XBMC, "1");
+                else if (value == VariableProtocol.PlaybackStopped)
+                    server.SendSettingToClient("arduino", DeviceProtocol.XBMC, "0");
+            }
             else if (device == DeviceProtocol.LockStatus)
             {
                 if (value == VariableProtocol.Unlock)
@@ -123,7 +131,7 @@ namespace PiServer
                     ArrayList clients = server.GetClientList();
                     foreach (string lClient in clients)
                     {
-                        server.SendMessageToClient(lClient, client + ">Battery is 100%");
+                        server.SendMessageToClient(lClient, client + ">Battery fully charged 100%");
                     }
                 }
                 if (value == "30")
