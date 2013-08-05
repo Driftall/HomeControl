@@ -131,6 +131,11 @@ namespace PiServer
                             cpu.server.SendSettingToClient("arduino", DeviceProtocol.Beep, VariableProtocol.On);
                             break;
                         }
+                    case "checkevent":
+                        {
+                            cpu.events.CheckEvents(cpu.protocol);
+                            break;
+                        }
                 }
             }
         }

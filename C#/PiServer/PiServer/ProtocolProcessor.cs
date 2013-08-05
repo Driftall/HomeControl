@@ -8,6 +8,7 @@ using System.Collections;
 using System.Timers;
 using System.Data;
 using System.IO;
+using System.Media;
 
 namespace PiServer
 {
@@ -16,6 +17,7 @@ namespace PiServer
         public HomeServer server;
         public Dictionary<byte, String> protocol;
         public Voice voice;
+        public Events events;
         Timer timeChecker;
         public ProtocolProcessor()
         {
@@ -24,10 +26,13 @@ namespace PiServer
             server.ClientConnected += server_ClientConnected;
             server.ClientDisconnected += server_ClientDisconnected;
             server.DebugReceivedFromClient += server_DebugReceivedFromClient;
-            server.ValueUpdatedByClient += server_ValueUpdatedByClient;
+            server.ValueUpdatedByClient += server_ValueUpdated;
             server.MessageReceivedFromClient += server_MessageReceivedFromClient;
 
             voice = new Voice();
+
+            events = new Events("events.txt");
+            events.HandleEvent += server_ValueUpdated;
 
             timeChecker = new Timer(30000);
             timeChecker.Elapsed += timeChecker_Elapsed;
@@ -81,7 +86,7 @@ namespace PiServer
             Console.WriteLine(client + ">Debug>" + debug);
         }
 
-        void server_ValueUpdatedByClient(string client, byte device, String value)
+        void server_ValueUpdated(string client, byte device, String value)
         {
             Console.WriteLine(client + ">Data>" + ProtocolConversion.getProtocolName(device) + ">Update>" + ProtocolConversion.getVariableValue(value));
             protocol[device] = value;
@@ -123,6 +128,10 @@ namespace PiServer
                         }
                     }
                 }
+            }
+            else if (device == DeviceProtocol.Beep)
+            {
+                SystemSounds.Beep.Play();
             }
             else if (device == DeviceProtocol.BatteryPercentage)
             {

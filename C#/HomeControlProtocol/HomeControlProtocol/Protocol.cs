@@ -83,6 +83,32 @@ namespace HomeControlProtocol
             return protocol.ToString();
         }
 
+        public static byte getProtocolByte(string protocol)
+        {
+            if (protocol == "Debug")
+                return DeviceProtocol.Debug;
+            else if (protocol == "LockStatus")
+                return DeviceProtocol.LockStatus;
+            else if (protocol == "IP")
+                return DeviceProtocol.IP;
+            else if (protocol == "BatteryPercentage")
+                return DeviceProtocol.BatteryPercentage;
+            else if (protocol == "Beep")
+                return DeviceProtocol.Beep;
+            else if (protocol == "DoorLCD")
+                return DeviceProtocol.DoorLCD;
+            else if (protocol == "DateTime")
+                return DeviceProtocol.DateTime;
+            else if (protocol == "Alarm")
+                return DeviceProtocol.Alarm;
+            else if (protocol == "Timer")
+                return DeviceProtocol.Timer;
+            else if (protocol == "XBMC")
+                return DeviceProtocol.XBMC;
+
+            return 0;
+        }
+
         public static string getVariableValue(string variable)
         {
             if (variable == VariableProtocol.Off)
