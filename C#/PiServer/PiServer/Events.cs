@@ -23,7 +23,7 @@ namespace PiServer
                 foreach (string line in lines)
                 {
                     string[] lineData = line.Split(';');
-                    eventList[lineData[0]] = lineData[1];
+                    eventList[lineData[0]] = "events\\" + lineData[1];
                 }
             }
             else

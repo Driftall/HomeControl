@@ -51,7 +51,7 @@ namespace WindowsTray
 
         void timer_Tick(object sender, EventArgs e)
         {
-            if (isLaptop)
+            /*if (isLaptop)
             {
                 float batteryPercentage = SystemInformation.PowerStatus.BatteryLifePercent * 100;
                 if (batteryPercentage != lastBatteryPercentage)
@@ -59,14 +59,14 @@ namespace WindowsTray
                     lastBatteryPercentage = batteryPercentage;
                     client.ChangeValueOnServer(DeviceProtocol.BatteryPercentage, batteryPercentage.ToString());
                 }
-            }
+            }*/
         }
 
         void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
             if (e.Mode == PowerModes.Suspend)
             {
-                client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.FullLock);
+                //client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.FullLock);
             }
             //TODO: Connect after waking?
         }
@@ -75,11 +75,11 @@ namespace WindowsTray
         {
             if (e.Reason == SessionSwitchReason.SessionLock)
             {
-                client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.QuickLock);
+                //client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.QuickLock);
             }
             else if (e.Reason == SessionSwitchReason.SessionUnlock)
             {
-                client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.Unlock);
+                //client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.Unlock);
             }
         }
 
@@ -105,7 +105,7 @@ namespace WindowsTray
 
         void client_SettingSentFromServer(byte setting, string value)
         {
-            if(setting == DeviceProtocol.LockStatus)
+            /*if(setting == DeviceProtocol.LockStatus)
             {
                 if (value == VariableProtocol.QuickLock)
                 {
@@ -119,7 +119,7 @@ namespace WindowsTray
             else if (setting == DeviceProtocol.Beep)
             {
                 SystemSounds.Beep.Play();
-            }
+            }*/
         }
 
         void client_MessageReceivedFromServer(string data)

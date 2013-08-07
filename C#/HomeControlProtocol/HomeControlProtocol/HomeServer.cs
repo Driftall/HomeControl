@@ -81,7 +81,7 @@ namespace HomeControlProtocol
         {
             byte device = data[0];
             byte command = data[1];
-            if (command == DataProtocol.changedValue)
+            if (command == DataProtocol.clientChangedValue)
             {
                 byte[] bytes = new byte[data.Length - 2];
                 System.Buffer.BlockCopy(data, 2, bytes, 0, bytes.Length);
@@ -119,7 +119,7 @@ namespace HomeControlProtocol
         {
             byte device = data[0];
             byte command = data[1];
-            if (command == DataProtocol.changedValue)
+            if (command == DataProtocol.clientChangedValue)
             {
                 byte[] bytes = new byte[data.Length - 2];
                 System.Buffer.BlockCopy(data, 2, bytes, 0, bytes.Length);
@@ -157,7 +157,7 @@ namespace HomeControlProtocol
         {
             byte device = data[0];
             byte command = data[1];
-            if (command == DataProtocol.changedValue)
+            if (command == DataProtocol.clientChangedValue)
             {
                 byte[] bytes = new byte[data.Length - 2];
                 System.Buffer.BlockCopy(data, 2, bytes, 0, bytes.Length);
@@ -174,7 +174,7 @@ namespace HomeControlProtocol
 
         void arduinoTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            int dayInt = (int)DateTime.Now.DayOfWeek;
+            /*int dayInt = (int)DateTime.Now.DayOfWeek;
             if (dayInt == 0) dayInt = 7;
             String day = "0" + dayInt.ToString();
             String date = DateTime.Now.Day.ToString();
@@ -188,9 +188,9 @@ namespace HomeControlProtocol
             string toSend = day.ToString() + " " + date + " " + month + " " + hour + ":" + minute;
             byte[] bytesToSend = new byte[toSend.Length + 2];
             bytesToSend[0] = DeviceProtocol.DateTime;
-            bytesToSend[1] = DataProtocol.setValue;
+            bytesToSend[1] = DataProtocol.setClientValue;
             System.Buffer.BlockCopy(Encoding.UTF8.GetBytes(toSend), 0, bytesToSend, 2, toSend.Length);
-            arduino.SendDataToArduino(bytesToSend);
+            arduino.SendDataToArduino(bytesToSend);*/
         }
 
         public ArrayList GetClientList()
@@ -217,7 +217,7 @@ namespace HomeControlProtocol
         {
             byte[] bytes = new byte[value.Length + 2];
             bytes[0] = device;
-            bytes[1] = DataProtocol.setValue;
+            bytes[1] = DataProtocol.setClientValue;
             System.Buffer.BlockCopy(Encoding.UTF8.GetBytes(value), 0, bytes, 2, value.Length);
             if (client == "arduino")
             {

@@ -74,7 +74,7 @@ namespace WindowsTray
         {
             byte device = data[0];
             byte command = data[1];
-            if (command == DataProtocol.setValue)
+            if (command == DataProtocol.setClientValue)
             {
                 byte[] bytes = new byte[data.Length - 2];
                 System.Buffer.BlockCopy(data, 2, bytes, 0, bytes.Length);
@@ -98,7 +98,7 @@ namespace WindowsTray
         {
             byte[] bytesToSend = new byte[value.Length + 2];
             bytesToSend[0] = device;
-            bytesToSend[1] = DataProtocol.changedValue;
+            bytesToSend[1] = DataProtocol.clientChangedValue;
             System.Buffer.BlockCopy(Encoding.UTF8.GetBytes(value), 0, bytesToSend, 2, value.Length);
             client.SendDataToServer(bytesToSend);
         }
