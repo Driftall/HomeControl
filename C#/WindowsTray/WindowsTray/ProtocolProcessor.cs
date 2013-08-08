@@ -6,9 +6,10 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HomeControlProtocol;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
+
+using MqttLib;
 
 namespace WindowsTray
 {
@@ -22,64 +23,121 @@ namespace WindowsTray
         public bool isLaptop = true;
         float lastBatteryPercentage;
 
-        public HomeClient client;
+        IMqtt client;
+
         Timer timer;
 
-        public ProtocolProcessor(String clientName, String IP, int Port)
+        public ProtocolProcessor(String clientName, String IP)
         {
             if(SystemInformation.PowerStatus.BatteryChargeStatus == BatteryChargeStatus.NoSystemBattery)
             {
                 isLaptop = false;
             }
+
             Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             Microsoft.Win32.SystemEvents.PowerModeChanged += new Microsoft.Win32.PowerModeChangedEventHandler(SystemEvents_PowerModeChanged);
+
+            client = MqttClientFactory.CreateClient("tcp://" + IP + ":1883", Environment.MachineName);
+            client.Connected += client_Connected;
+            client.ConnectionLost += client_ConnectionLost;
+            client.PublishArrived += client_PublishArrived;
+            client.Published += client_Published;
+            client.Subscribed += client_Subscribed;
+            client.Unsubscribed += client_Unsubscribed;
+            client.Connect();
+            client.Subscribe("BLAKE-PC/#", 0);
+            client.Subscribe("UNIVERSAL/#", 0);
 
             timer = new Timer();
             timer.Interval = 10000;
             timer.Tick += timer_Tick;
             timer.Enabled = true;
+        }
 
-            client = new HomeClient(clientName);
-            client.Connected += client_Connected;
-            client.ConnectionFailed += client_ConnectionFailed;
-            client.Disconnected += client_Disconnected;
-            client.DebugReceivedFromServer += client_DebugReceivedFromServer;
-            client.SettingSentFromServer += client_SettingSentFromServer;
-            client.MessageReceivedFromServer += client_MessageReceivedFromServer;
-            client.Connect(IP, Port);
+        void client_Connected(object sender, EventArgs e)
+        {
+            client.Publish("CONNECTED", Environment.MachineName, 0, true);
+        }
+
+        void client_ConnectionLost(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool client_PublishArrived(object sender, PublishArrivedArgs e)
+        {
+            string topic = e.Topic;
+            if (e.Topic.StartsWith("UNIVERSAL"))
+            {
+                topic = e.Topic.Remove(0, 10);
+            }
+            else if (e.Topic.StartsWith(Environment.MachineName))
+            {
+                topic = e.Topic.Remove(0, Environment.MachineName.Length + 1);
+            }
+            if (topic == "SESSION")
+            {
+                if (e.Payload == "LOCK")
+                {
+                    LockWorkStation();
+                }
+            }
+            else if (topic == "BEEP")
+            {
+                SystemSounds.Beep.Play();
+            }
+            return true;
+        }
+
+        void client_Published(object sender, CompleteArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        void client_Subscribed(object sender, CompleteArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        void client_Unsubscribed(object sender, CompleteArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         void timer_Tick(object sender, EventArgs e)
         {
-            /*if (isLaptop)
+            if (isLaptop)
             {
                 float batteryPercentage = SystemInformation.PowerStatus.BatteryLifePercent * 100;
                 if (batteryPercentage != lastBatteryPercentage)
                 {
                     lastBatteryPercentage = batteryPercentage;
-                    client.ChangeValueOnServer(DeviceProtocol.BatteryPercentage, batteryPercentage.ToString());
+                    client.Publish("SERVER/BATTERY/" + Environment.MachineName, batteryPercentage.ToString(), 0, true);
                 }
-            }*/
+            }
         }
 
         void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
             if (e.Mode == PowerModes.Suspend)
             {
-                //client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.FullLock);
+                client.Publish("SERVER/POWER/" + Environment.MachineName, "SUSPEND", 0, true);
             }
-            //TODO: Connect after waking?
+            else if (e.Mode == PowerModes.Resume)
+            {
+                client.Publish("SERVER/POWER/" + Environment.MachineName, "SUSPEND", 0, true);
+            }
         }
 
         void SystemEvents_SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
         {
             if (e.Reason == SessionSwitchReason.SessionLock)
             {
-                //client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.QuickLock);
+                client.Publish("SERVER/SESSION/" + Environment.MachineName, "LOCK", 0, true);
             }
             else if (e.Reason == SessionSwitchReason.SessionUnlock)
             {
-                //client.ChangeValueOnServer(DeviceProtocol.LockStatus, VariableProtocol.Unlock);
+                client.Publish("SERVER/SESSION/" + Environment.MachineName, "UNLOCK", 0, true);
             }
         }
 
@@ -96,30 +154,6 @@ namespace WindowsTray
         void client_Disconnected()
         {
             Notify(5000, "Home Control Suite", "Connection lost", ToolTipIcon.Error);
-        }
-
-        void client_DebugReceivedFromServer(byte device, string debug)
-        {
-            Notify(5000, "Debug Message", ProtocolConversion.getProtocolName(device) + debug, ToolTipIcon.Info);
-        }
-
-        void client_SettingSentFromServer(byte setting, string value)
-        {
-            /*if(setting == DeviceProtocol.LockStatus)
-            {
-                if (value == VariableProtocol.QuickLock)
-                {
-                    LockWorkStation();
-                }
-                else if (value == VariableProtocol.FullLock)
-                {
-                    //Sleep PC
-                }
-            }
-            else if (setting == DeviceProtocol.Beep)
-            {
-                SystemSounds.Beep.Play();
-            }*/
         }
 
         void client_MessageReceivedFromServer(string data)

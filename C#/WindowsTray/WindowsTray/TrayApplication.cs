@@ -26,9 +26,7 @@ namespace WindowsTray
         {
             InitializeContext();
             notifyIcon.ShowBalloonTip(5000, "Home Control Suite", "Started succesfully", ToolTipIcon.None);
-            int port;
-            int.TryParse(Settings.getSetting(Settings.Port), out port);
-            cpu = new ProtocolProcessor(Environment.MachineName, Settings.getSetting(Settings.IP), port);
+            cpu = new ProtocolProcessor(Environment.MachineName, Settings.getSetting(Settings.IP));
             cpu.Notify += cpu_Notify;
         }
 
@@ -60,15 +58,14 @@ namespace WindowsTray
             switch (data)
             {
                 case "connect":
-                    int port;
-                    int.TryParse(Settings.getSetting(Settings.Port), out port);
-                    cpu.client.Connect(Settings.getSetting(Settings.IP), port);
+
+
                     break;
                 case "disconnect":
-                    cpu.client.Disconnect();
+
                     break;
                 case "connectionStatus":
-                    if (cpu.client.getConnectionStatus())
+                    if (true)
                     {
                         formSettings.setConnectionStatus("Status: Connected");
                     }

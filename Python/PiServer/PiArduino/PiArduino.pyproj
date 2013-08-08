@@ -3,15 +3,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>a557cc8d-07f4-4bc1-91f2-299b46586cfb</ProjectGuid>
+    <ProjectGuid>33afa1fe-3106-4d77-a7bd-714c039846f4</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PiServer.py</StartupFile>
+    <StartupFile>PiArduino.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>PiServer</Name>
-    <RootNamespace>PiServer</RootNamespace>
+    <Name>PiArduino</Name>
+    <RootNamespace>PiArduino</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,8 +22,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="event.py" />
     <Compile Include="mosquitto.py" />
-    <Compile Include="PiServer.py" />
+    <Compile Include="PiArduino.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>

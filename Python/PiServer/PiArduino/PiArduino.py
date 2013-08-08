@@ -1,4 +1,5 @@
 import mosquitto;
+import serial;
 
 #http://mosquitto.org/documentation/python/
 
@@ -6,12 +7,7 @@ def on_connect(mosq, obj, rc):
     print("rc: "+str(rc))
 
 def on_message(mosq, obj, msg):
-    if(msg.topic[:6] == "SERVER"):
-        print(msg.topic[7:] +" "+ str(msg.payload))
-    else:
-        if(msg.topic == "CONNECTED"):
-            client.publish(str(msg.payload) + "/BEEP");
-        print(msg.topic +" "+ str(msg.payload))
+    print(msg.topic[8:] +" "+str(msg.payload))
 
 def on_publish(mosq, obj, mid):
     print("mid: "+str(mid))
@@ -22,7 +18,9 @@ def on_subscribe(mosq, obj, mid, granted_qos):
 def on_log(mosq, obj, level, string):
     print(string)
 
-client = mosquitto.Mosquitto("SERVER");
+#arduino = serial.Serial("COM3", timeout=1);
+
+client = mosquitto.Mosquitto("ARDUINO");
 
 client.on_message = on_message
 client.on_connect = on_connect
@@ -30,14 +28,12 @@ client.on_publish = on_publish
 client.on_subscribe = on_subscribe
 
 client.connect("192.168.0.117");
-client.subscribe("SERVER/#", 0);
-client.subscribe("CONNECTED", 0);
+client.subscribe("ARDUINO/#", 0);
 
-print("SERVER");
+print("ARDUINO");
 
 result = 0;
 while result == 0:
     result = client.loop()
 
 print("result: " + str(result));
-

@@ -32,11 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HomeControlProtocol">
-      <HintPath>..\..\HomeControlProtocol\HomeControlProtocol\bin\Debug\HomeControlProtocol.dll</HintPath>
-    </Reference>
-    <Reference Include="SocketLibrary">
-      <HintPath>..\..\..\..\SocketLibrary\C#\SocketLibrary\bin\Debug\SocketLibrary.dll</HintPath>
+    <Reference Include="MqttLib">
+      <HintPath>..\..\..\..\MqttDotNet\MqttLib\bin\Debug\MqttLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

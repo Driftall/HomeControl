@@ -32,8 +32,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxIP = new System.Windows.Forms.TextBox();
             this.groupBoxServer = new System.Windows.Forms.GroupBox();
-            this.textBoxPort = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelServerStatus = new System.Windows.Forms.Label();
+            this.buttonServerDisconnect = new System.Windows.Forms.Button();
+            this.buttonServerConnect = new System.Windows.Forms.Button();
             this.groupBoxAbout = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonCancel = new System.Windows.Forms.Button();
@@ -56,9 +57,6 @@
             this.buttonClientRefresh = new System.Windows.Forms.Button();
             this.comboBoxClients = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.buttonServerConnect = new System.Windows.Forms.Button();
-            this.buttonServerDisconnect = new System.Windows.Forms.Button();
-            this.labelServerStatus = new System.Windows.Forms.Label();
             this.groupBoxServer.SuspendLayout();
             this.groupBoxAbout.SuspendLayout();
             this.groupBoxEvents.SuspendLayout();
@@ -87,9 +85,7 @@
             // 
             this.groupBoxServer.Controls.Add(this.labelServerStatus);
             this.groupBoxServer.Controls.Add(this.buttonServerDisconnect);
-            this.groupBoxServer.Controls.Add(this.textBoxPort);
             this.groupBoxServer.Controls.Add(this.buttonServerConnect);
-            this.groupBoxServer.Controls.Add(this.label2);
             this.groupBoxServer.Controls.Add(this.label1);
             this.groupBoxServer.Controls.Add(this.textBoxIP);
             this.groupBoxServer.Location = new System.Drawing.Point(12, 12);
@@ -99,22 +95,34 @@
             this.groupBoxServer.TabStop = false;
             this.groupBoxServer.Text = "Server Connection";
             // 
-            // textBoxPort
+            // labelServerStatus
             // 
-            this.textBoxPort.Location = new System.Drawing.Point(79, 43);
-            this.textBoxPort.Name = "textBoxPort";
-            this.textBoxPort.Size = new System.Drawing.Size(81, 20);
-            this.textBoxPort.TabIndex = 4;
-            this.textBoxPort.Text = "9999";
+            this.labelServerStatus.AutoSize = true;
+            this.labelServerStatus.Location = new System.Drawing.Point(170, 46);
+            this.labelServerStatus.Name = "labelServerStatus";
+            this.labelServerStatus.Size = new System.Drawing.Size(109, 13);
+            this.labelServerStatus.TabIndex = 9;
+            this.labelServerStatus.Text = "Status: Disconnected";
             // 
-            // label2
+            // buttonServerDisconnect
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 46);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Server Port:";
+            this.buttonServerDisconnect.Location = new System.Drawing.Point(226, 17);
+            this.buttonServerDisconnect.Name = "buttonServerDisconnect";
+            this.buttonServerDisconnect.Size = new System.Drawing.Size(70, 20);
+            this.buttonServerDisconnect.TabIndex = 8;
+            this.buttonServerDisconnect.Text = "Disconnect";
+            this.buttonServerDisconnect.UseVisualStyleBackColor = true;
+            this.buttonServerDisconnect.Click += new System.EventHandler(this.buttonServerDisconnect_Click);
+            // 
+            // buttonServerConnect
+            // 
+            this.buttonServerConnect.Location = new System.Drawing.Point(166, 17);
+            this.buttonServerConnect.Name = "buttonServerConnect";
+            this.buttonServerConnect.Size = new System.Drawing.Size(59, 20);
+            this.buttonServerConnect.TabIndex = 7;
+            this.buttonServerConnect.Text = "Connect";
+            this.buttonServerConnect.UseVisualStyleBackColor = true;
+            this.buttonServerConnect.Click += new System.EventHandler(this.buttonServerConnect_Click);
             // 
             // groupBoxAbout
             // 
@@ -341,35 +349,6 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Client:";
             // 
-            // buttonServerConnect
-            // 
-            this.buttonServerConnect.Location = new System.Drawing.Point(166, 17);
-            this.buttonServerConnect.Name = "buttonServerConnect";
-            this.buttonServerConnect.Size = new System.Drawing.Size(59, 20);
-            this.buttonServerConnect.TabIndex = 7;
-            this.buttonServerConnect.Text = "Connect";
-            this.buttonServerConnect.UseVisualStyleBackColor = true;
-            this.buttonServerConnect.Click += new System.EventHandler(this.buttonServerConnect_Click);
-            // 
-            // buttonServerDisconnect
-            // 
-            this.buttonServerDisconnect.Location = new System.Drawing.Point(226, 17);
-            this.buttonServerDisconnect.Name = "buttonServerDisconnect";
-            this.buttonServerDisconnect.Size = new System.Drawing.Size(70, 20);
-            this.buttonServerDisconnect.TabIndex = 8;
-            this.buttonServerDisconnect.Text = "Disconnect";
-            this.buttonServerDisconnect.UseVisualStyleBackColor = true;
-            this.buttonServerDisconnect.Click += new System.EventHandler(this.buttonServerDisconnect_Click);
-            // 
-            // labelServerStatus
-            // 
-            this.labelServerStatus.AutoSize = true;
-            this.labelServerStatus.Location = new System.Drawing.Point(170, 46);
-            this.labelServerStatus.Name = "labelServerStatus";
-            this.labelServerStatus.Size = new System.Drawing.Size(109, 13);
-            this.labelServerStatus.TabIndex = 9;
-            this.labelServerStatus.Text = "Status: Disconnected";
-            // 
             // FormSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -403,8 +382,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxIP;
         private System.Windows.Forms.GroupBox groupBoxServer;
-        private System.Windows.Forms.TextBox textBoxPort;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBoxAbout;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonCancel;
