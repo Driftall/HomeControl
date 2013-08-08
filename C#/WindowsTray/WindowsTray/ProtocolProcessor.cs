@@ -125,7 +125,7 @@ namespace WindowsTray
             }
             else if (e.Mode == PowerModes.Resume)
             {
-                client.Publish("SERVER/POWER/" + Environment.MachineName, "SUSPEND", 0, true);
+                client.Publish("SERVER/POWER/" + Environment.MachineName, "RESUME", 0, true);
             }
         }
 
