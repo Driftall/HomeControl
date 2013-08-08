@@ -8,10 +8,13 @@ def on_connect(mosq, obj, rc):
 def on_message(mosq, obj, msg):
     if(msg.topic[:6] == "SERVER"):
         print(msg.topic[7:] +" "+ str(msg.payload))
-    else:
-        if(msg.topic == "CONNECTED"):
-            client.publish(str(msg.payload) + "/BEEP");
-        print(msg.topic +" "+ str(msg.payload))
+    elif(msg.topic[:10] == "CONNECTION"):
+        clientStr = msg.topic[11:];
+        print(clientStr + ">" + str(msg.payload));
+        if(str(msg.payload) == "CONNECTED"):
+            client.publish(clientStr + "/BEEP");
+        elif(str(msg.payload) == "DISCONNECTED"):
+            dosomething = True
 
 def on_publish(mosq, obj, mid):
     print("mid: "+str(mid))
@@ -31,7 +34,7 @@ client.on_subscribe = on_subscribe
 
 client.connect("192.168.0.117");
 client.subscribe("SERVER/#", 0);
-client.subscribe("CONNECTED", 0);
+client.subscribe("CONNECTION/#", 0);
 
 print("SERVER");
 

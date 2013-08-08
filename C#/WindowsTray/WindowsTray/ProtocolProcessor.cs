@@ -44,7 +44,7 @@ namespace WindowsTray
             client.Published += client_Published;
             client.Subscribed += client_Subscribed;
             client.Unsubscribed += client_Unsubscribed;
-            client.Connect();
+            client.Connect("CONNECTION/" + Environment.MachineName, 0, "DISCONNECTED", true);
             client.Subscribe("BLAKE-PC/#", 0);
             client.Subscribe("UNIVERSAL/#", 0);
 
@@ -56,7 +56,7 @@ namespace WindowsTray
 
         void client_Connected(object sender, EventArgs e)
         {
-            client.Publish("CONNECTED", Environment.MachineName, 0, true);
+            client.Publish("CONNECTION/" + Environment.MachineName, "CONNECTED", 0, true);
         }
 
         void client_ConnectionLost(object sender, EventArgs e)

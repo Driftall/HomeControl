@@ -21,6 +21,7 @@ def on_log(mosq, obj, level, string):
 #arduino = serial.Serial("COM3", timeout=1);
 
 client = mosquitto.Mosquitto("ARDUINO");
+client.will_set("CONNECTION/ARDUINO", "DISCONNECTED", 0, True);
 
 client.on_message = on_message
 client.on_connect = on_connect
@@ -29,6 +30,7 @@ client.on_subscribe = on_subscribe
 
 client.connect("192.168.0.117");
 client.subscribe("ARDUINO/#", 0);
+client.publish("CONNECTION/ARDUINO", "CONNECTED", 0, True);
 
 print("ARDUINO");
 
