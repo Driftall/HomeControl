@@ -12,9 +12,10 @@ def on_message(mosq, obj, msg):
         clientStr = msg.topic[11:];
         print(clientStr + ">" + str(msg.payload));
         if(str(msg.payload) == "CONNECTED"):
-            client.publish(clientStr + "/BEEP");
+            clients.append(clientStr);
+            connected.append(clientStr);
         elif(str(msg.payload) == "DISCONNECTED"):
-            dosomething = True
+            connected.remove(clientStr);
 
 def on_publish(mosq, obj, mid):
     print("mid: "+str(mid))
@@ -24,6 +25,10 @@ def on_subscribe(mosq, obj, mid, granted_qos):
 
 def on_log(mosq, obj, level, string):
     print(string)
+
+
+clients = []
+connected = []
 
 client = mosquitto.Mosquitto("SERVER");
 
