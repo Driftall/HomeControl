@@ -5,6 +5,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PiArduino", "PiArduino\PiAr
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PiServer", "PiServer\PiServer.pyproj", "{A557CC8D-07F4-4BC1-91F2-299B46586CFB}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PiTests", "PiTests\PiTests.pyproj", "{66D797A5-6B98-44D8-9AF3-3957C3A77092}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{A557CC8D-07F4-4BC1-91F2-299B46586CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A557CC8D-07F4-4BC1-91F2-299B46586CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A557CC8D-07F4-4BC1-91F2-299B46586CFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66D797A5-6B98-44D8-9AF3-3957C3A77092}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66D797A5-6B98-44D8-9AF3-3957C3A77092}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66D797A5-6B98-44D8-9AF3-3957C3A77092}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66D797A5-6B98-44D8-9AF3-3957C3A77092}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
