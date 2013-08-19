@@ -1,4 +1,5 @@
 import mosquitto;
+import voice;
 
 #http://mosquitto.org/documentation/python/
 
@@ -16,6 +17,8 @@ def on_message(mosq, obj, msg):
             connected.append(clientStr);
         elif(str(msg.payload) == "DISCONNECTED"):
             connected.remove(clientStr);
+
+        voice.speak(2, clientStr + " " + str(msg.payload));
 
 def on_publish(mosq, obj, mid):
     print("mid: "+str(mid))
@@ -40,6 +43,8 @@ client.on_subscribe = on_subscribe
 client.connect("192.168.0.117");
 client.subscribe("SERVER/#", 0);
 client.subscribe("CONNECTION/#", 0);
+
+voice.speak(2, "Server started");
 
 print("SERVER");
 
