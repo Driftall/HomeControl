@@ -5,13 +5,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>66d797a5-6b98-44d8-9af3-3957c3a77092</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PiTests.py</StartupFile>
+    <StartupFile>weather.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>PiTests</Name>
     <RootNamespace>PiTests</RootNamespace>
+    <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,7 +23,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="facebookTest.py" />
     <Compile Include="PiTests.py" />
+    <Compile Include="timerTest.py" />
+    <Compile Include="weather.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>
