@@ -26,6 +26,7 @@
     <Compile Include="mosquitto.py" />
     <Compile Include="PiServer.py" />
     <Compile Include="voice.py" />
+    <Compile Include="weather.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>

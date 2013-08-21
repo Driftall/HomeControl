@@ -5,7 +5,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>66d797a5-6b98-44d8-9af3-3957c3a77092</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>weather.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -26,7 +27,6 @@
     <Compile Include="facebookTest.py" />
     <Compile Include="PiTests.py" />
     <Compile Include="timerTest.py" />
-    <Compile Include="weather.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>

@@ -1,5 +1,7 @@
 import mosquitto;
 import voice;
+import weather;
+import time;
 
 #http://mosquitto.org/documentation/python/
 
@@ -48,8 +50,45 @@ voice.speak(2, "Server started");
 
 print("SERVER");
 
+def wakeUp():
+    weatherResults = weather.getWeather("EC1A 1BB");
+    nowTime = time.localtime(time.time())
+    year = nowTime[0]
+    month = nowTime[1]
+    day = nowTime[2]
+    hour = nowTime[3]
+    minute = nowTime[4]
+    days = ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    hourString = hour;
+    dayTimeString = "AM";
+    if(hour > 12):
+        dayTimeString = "PM";
+        hourString = str(hour - 12)
+    minuteString = "";
+    if minute > 9:
+        minuteString = ':' + str(minute)
+    elif minute > 0:
+        minuteString = ':0' + str(minute)
+
+    dateString = "today is " + "someday" + " the " + str(day) + "th of " + months[month]
+    finalString = hourString + minuteString + " " + dayTimeString + ", " + dateString
+    wakeupString = "Good Morning Sir, it is " + finalString + ", the weather in " + weatherResults['city'] + " is " + str(weatherResults['tempc']) + " degrees and " + weatherResults['weatherdesc']
+    print wakeupString
+
 result = 0;
+wakeupCalled = False;
 while result == 0:
+    nowTime = time.localtime(time.time())
+    hour = nowTime[3]
+    minute = nowTime[4]
+    alarmHour = 13
+    alarmMinute = 4
+    if hour == alarmHour and minute == alarmMinute and wakeupCalled == False:
+        wakeupCalled = True;
+        wakeUp()
+    elif hour == alarmHour and minute > alarmMinute:
+        wakeupCalled = False;
     result = client.loop()
 
 print("result: " + str(result));

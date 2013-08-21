@@ -1,8 +1,5 @@
 #from espeak import espeak
-from subprocess import PIPE, Popen
-
-def setVoice(voice):
-    voice
+#from subprocess import PIPE, Popen
 
 def speak(voice, toSpeak):
     if voice == 1:
