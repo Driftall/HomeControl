@@ -1,5 +1,5 @@
 #from espeak import espeak
-#from subprocess import PIPE, Popen
+from subprocess import PIPE, Popen
 
 def speak(voice, toSpeak):
     if voice == 1:
@@ -7,4 +7,4 @@ def speak(voice, toSpeak):
         #espeak.synth(toSpeak);
     elif voice == 2:
         dosomething = True
-        #process = Popen(['flite', '-voice', 'slt', '-t', "'" + toSpeak + "'"], stdout=PIPE);
+        process = Popen(['flite', '-voice', 'slt', '-t', "'" + toSpeak + "'"], stdout=PIPE);

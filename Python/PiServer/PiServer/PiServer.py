@@ -9,6 +9,8 @@ def on_connect(mosq, obj, rc):
     print("rc: "+str(rc))
 
 def on_message(mosq, obj, msg):
+    print("Topic: " + msg.topic)
+    print("Payload: " + str(msg.payload))
     if(msg.topic[:6] == "SERVER"):
         print(msg.topic[7:] +" "+ str(msg.payload))
     elif(msg.topic[:10] == "CONNECTION"):
@@ -75,6 +77,7 @@ def wakeUp():
     finalString = hourString + minuteString + " " + dayTimeString + ", " + dateString
     wakeupString = "Good Morning Sir, it is " + finalString + ", the weather in " + weatherResults['city'] + " is " + str(weatherResults['tempc']) + " degrees and " + weatherResults['weatherdesc']
     print wakeupString
+    voice.speak(2, wakeupString)
 
 result = 0;
 wakeupCalled = False;
